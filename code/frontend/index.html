@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c0f14">
+  <meta name="description" content="EchoQuest 回响 — 用一段设定，生成一场可以亲自走入的故事。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0d10'/%3E%3Ccircle cx='32' cy='32' r='8' fill='none' stroke='%23e6c180' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='16' fill='none' stroke='%23e6c180' stroke-opacity='.55' stroke-width='1.6'/%3E%3Ccircle cx='32' cy='32' r='24' fill='none' stroke='%23e6c180' stroke-opacity='.25' stroke-width='1.4'/%3E%3C/svg%3E">
+  <title>EchoQuest 回响 · 把设定变成可游玩的故事</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div class="ambient-grain" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <a class="brand" href="#/discover" aria-label="EchoQuest 首页">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="5.2" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="20" cy="20" r="10.4" stroke="currentColor" stroke-width="1.1" opacity=".55"/>
+          <circle cx="20" cy="20" r="15.2" stroke="currentColor" stroke-width=".9" opacity=".26"/>
+          <path d="M20 9.8v4.1M20 26.1v4.1M9.8 20h4.1M26.1 20h4.1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="brand-type">
+        <strong>EchoQuest</strong>
+        <span>回响 · 互动叙事</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="主导航">
+      <a href="#/discover" data-nav="discover">发现故事</a>
+      <a href="#/create" data-nav="create">创作工坊</a>
+      <a href="#/library" data-nav="library">我的作品</a>
+    </nav>
+
+    <div class="header-actions">
+      <span class="local-badge"><i></i> 原型体验版</span>
+      <a class="btn btn-primary btn-sm" href="#/create">
+        <span class="icon" data-icon="pen"></span>
+        开始创作
+      </a>
+      <button class="avatar-button" type="button" data-action="open-profile" aria-label="打开创作者资料">
+        <span>旅</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+
+  <footer class="site-footer" id="siteFooter">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="brand-mark small" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="5.2" stroke="currentColor" stroke-width="1.4"/>
+            <circle cx="20" cy="20" r="10.4" stroke="currentColor" stroke-width="1.1" opacity=".55"/>
+            <circle cx="20" cy="20" r="15.2" stroke="currentColor" stroke-width=".9" opacity=".26"/>
+          </svg>
+        </span>
+        <div>
+          <strong>EchoQuest</strong>
+          <p>让每个念头，都拥有自己的回声。</p>
+        </div>
+      </div>
+      <p class="footer-note">AI 互动叙事原型 · 2026</p>
+      <div class="footer-links">
+        <a href="#/discover">故事广场</a>
+        <a href="#/create">开始创作</a>
+        <a href="#" data-action="open-about">关于原型</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="overlayRoot"></div>
+  <div id="toastRoot" class="toast-root" aria-live="polite"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/story-generator.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
