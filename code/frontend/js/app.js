@@ -390,6 +390,19 @@
     });
   }
 
+  function renderNotFound() {
+    return `<section class="view not-found">
+      <span class="not-found-mark">${icon("fog")}</span>
+      <span class="eyebrow"><span class="eyebrow-line"></span>LOST BETWEEN PAGES</span>
+      <h1>这一页故事不在这里。</h1>
+      <p>它可能被删除、改名，或者还没有被写下来。</p>
+      <div class="not-found-actions">
+        <a class="btn btn-primary btn-sm" href="#/discover">${icon("bookOpen")} 回到故事广场</a>
+        <a class="btn btn-ghost btn-sm" href="#/create">${icon("sparkles")} 写一个新故事</a>
+      </div>
+    </section>`;
+  }
+
   function renderRoute() {
     closeModal(true);
     if (state.generation) cancelGeneration(true);
@@ -794,7 +807,7 @@
               </div>
               <div class="preview-note">
                 ${icon("sparkles")}
-                <p>生成会从你的设定中提取<strong>地点、关键物件与人物关系</strong>，直接写进开场与分支；进入工坊后仍可逐节点重写。</p>
+                <p>生成会先根据你的背景设计<strong>专属剧情流程</strong>，再写开场、分支与结局；不会套用固定模板。进入工坊后仍可逐节点重写。</p>
               </div>
             </div>
           </aside>
@@ -879,13 +892,25 @@
     "正在为世界装订封面…"
   ];
 
-  function startGeneration(config, mode) {
-    if (state.generation) return;
+  function localGenerationSteps() {
+    return GEN_STAGES.map((stage, index) => ({
+      id: "local-" + index,
+      label: stage.label,
+      detail: stage.detail
+    }));
+  }
+
+  function agentGenerationSteps() {
+    return (window.EchoQuestAgent && window.EchoQuestAgent.STEPS) || localGenerationSteps();
+  }
+
+  function renderGenerationScreen(config, mode, usingAgent, steps) {
     const overlay = $("#overlayRoot");
+    if (!overlay) return;
     const pack = D.PACKS[config.genre] || D.PACKS.suspense;
-    document.body.classList.add("is-generating");
+    const safeSteps = steps && steps.length ? steps : localGenerationSteps();
     overlay.innerHTML = `
-      <div class="generation-screen" role="dialog" aria-modal="true" aria-labelledby="genTitle">
+      <div class="generation-screen ${usingAgent ? "agent-mode" : "local-mode"}" role="dialog" aria-modal="true" aria-labelledby="genTitle">
         <div class="gen-noise" aria-hidden="true"></div>
         <header class="gen-header">
           <div class="brand brand--static">
@@ -899,26 +924,36 @@
             </span>
             <span class="brand-type"><strong>EchoQuest</strong><span>STORY FORGE</span></span>
           </div>
-          <button class="gen-cancel" type="button" data-action="cancel-generation">${icon("x")} 取消生成</button>
+          <div class="gen-header-right">
+            <span class="gen-mode-badge ${usingAgent ? "agent" : "local"}">
+              ${icon(usingAgent ? "orbit" : "pen")} ${usingAgent ? "AGENT WORKFLOW" : "LOCAL ENGINE"}
+            </span>
+            <button class="gen-cancel" type="button" data-action="cancel-generation">${icon("x")} 取消生成</button>
+          </div>
         </header>
         <div class="gen-body">
           <div class="gen-copy">
-            <span class="gen-kicker">FORGING A NEW WORLD</span>
+            <span class="gen-kicker">${usingAgent ? "MULTI-STEP STORY AGENT" : "FORGING A NEW WORLD"}</span>
             <h2 id="genTitle">你的故事<br>正在长出来。</h2>
             <p class="gen-sub">${escapeHtml(pack.genreLabel)} · ${config.endingCount === 1 ? "单结局" : "3 个结局"} · ${config.statsEnabled ? "角色属性已开启" : "轻量模式"}</p>
-            <div class="gen-status-line"><span class="pulse-dot"></span><span id="genStatus">正在读取你的故事种子…</span></div>
+            <div class="gen-status-line"><span class="pulse-dot"></span><span id="genStatus">${usingAgent ? "正在连接故事 Agent…" : "正在读取你的故事种子…"}</span></div>
             <div class="gen-stage-list" id="genStageList">
-              ${GEN_STAGES.map((stage, index) => `
-                <div class="gen-stage ${index === 0 ? "active" : ""}" data-stage="${index}">
+              ${safeSteps.map((stage, index) => `
+                <div class="gen-stage ${index === 0 ? "active" : ""}" data-gen-stage="${stage.id}">
                   <span class="gen-stage-icon">${index === 0 ? icon("orbit") : icon("circle")}</span>
-                  <div><strong>${stage.label}</strong><small>${stage.detail}</small></div>
+                  <div><strong>${escapeHtml(stage.label)}</strong><small>${escapeHtml(stage.detail)}</small></div>
                   <span class="gen-stage-state">${index === 0 ? "进行中" : "等待"}</span>
                 </div>`).join("")}
             </div>
             <div class="gen-progress-block">
-              <div class="gen-progress"><span id="genProgressBar"></span></div>
-              <div class="gen-progress-meta"><span id="genSnippet">${GEN_SNIPPETS[0]}</span><strong id="genPercent">0%</strong></div>
+              <div class="gen-progress"><span id="genProgressBar" style="width:2%"></span></div>
+              <div class="gen-progress-meta"><span id="genSnippet">${usingAgent ? "Agent 正在读取你的设定…" : "正在建立故事世界…"}</span><strong id="genPercent">2%</strong></div>
             </div>
+            ${usingAgent ? `
+            <div class="agent-trace-panel" id="agentTracePanel">
+              <div class="agent-trace-head"><span>${icon("orbit")} AGENT TRACE</span><span id="agentTokenTotal">0 tokens</span></div>
+              <div class="agent-trace-list" id="agentTraceList"><p class="agent-trace-empty">等待第一个 Agent 启动…</p></div>
+            </div>` : ""}
           </div>
           <div class="gen-visual">
             <div class="gen-visual-inner">
@@ -938,67 +973,205 @@
                 <circle cx="260" cy="260" r="150" stroke="rgba(231,200,142,.08)"/>
                 <circle cx="260" cy="260" r="210" stroke="rgba(231,200,142,.05)"/>
               </svg>
-              <div class="gen-visual-caption"><span>STORY TREE</span><span id="genNodeCount">节点生成中</span></div>
+              <div class="gen-visual-caption"><span>${usingAgent ? "AGENT ORCHESTRATION" : "STORY TREE"}</span><span id="genNodeCount">节点生成中</span></div>
             </div>
           </div>
         </div>
-        <footer class="gen-footer"><span>EchoQuest 原型 · 本地模拟 AI 生成</span><span>请保持这一页打开</span></footer>
+        <footer class="gen-footer"><span>${usingAgent ? "EchoQuest Agent · 密钥由服务器保管" : "EchoQuest 原型 · 本地剧情引擎"}</span><span>请保持这一页打开</span></footer>
       </div>`;
     hydrateIcons(overlay);
+  }
 
-    const totalMs = 4400;
-    const startedAt = Date.now();
+  function setGenerationProgress(percent, snippet, detail) {
+    const value = clamp(Math.round(percent), 0, 100);
+    const bar = $("#genProgressBar");
+    const percentEl = $("#genPercent");
+    if (bar) bar.style.width = value + "%";
+    if (percentEl) percentEl.textContent = value + "%";
+    const snippetEl = $("#genSnippet");
+    if (snippetEl && snippet) snippetEl.textContent = snippet;
+    const statusEl = $("#genStatus");
+    if (statusEl && detail) statusEl.textContent = detail;
+  }
+
+  function updateGenerationStage(id, status, detail) {
+    const el = document.querySelector('[data-gen-stage="' + id + '"]');
+    if (!el) return;
+    el.classList.remove("active", "done", "warning", "skipped", "error");
+    if (status === "active") el.classList.add("active");
+    if (status === "done") el.classList.add("done");
+    if (status === "warning") el.classList.add("warning");
+    if (status === "skipped") el.classList.add("skipped");
+    if (status === "error") el.classList.add("error");
+    const stateEl = $(".gen-stage-state", el);
+    const labels = { active: "进行中", done: "完成", warning: "警告", skipped: "跳过", error: "失败" };
+    if (stateEl) stateEl.textContent = labels[status] || "等待";
+    if (detail) {
+      const detailEl = $("small", el);
+      if (detailEl) detailEl.textContent = detail;
+    }
+    const iconEl = $(".gen-stage-icon", el);
+    if (iconEl) {
+      const icons = { active: "orbit", done: "check", warning: "alert", skipped: "minus", error: "x" };
+      iconEl.innerHTML = icon(icons[status] || "circle");
+    }
+  }
+
+  function appendGenerationTrace(entry) {
+    const list = $("#agentTraceList");
+    if (!list) return;
+    const empty = $(".agent-trace-empty");
+    if (empty) empty.remove();
+    const row = document.createElement("div");
+    row.className = "agent-trace-row " + (entry.status || "success");
+    const tool = entry.tool || "agent";
+    const latency = entry.latencyMs ? (entry.latencyMs / 1000).toFixed(1) + "s" : "";
+    const tokens = entry.usage && entry.usage.total_tokens ? entry.usage.total_tokens + " tok" : "";
+    row.innerHTML = `
+      <span class="agent-trace-icon">${icon(entry.status === "error" ? "x" : entry.status === "warning" ? "alert" : tool === "validator" ? "shield" : tool === "compiler" ? "layers" : "sparkles")}</span>
+      <div><strong>${escapeHtml((entry.tool || "Agent") + " · " + (entry.detail || ""))}</strong><span>${escapeHtml(entry.model || "")}</span></div>
+      <em>${[latency, tokens].filter(Boolean).join(" · ")}</em>`;
+    list.appendChild(row);
+    list.scrollTop = list.scrollHeight;
+    const total = $$(".agent-trace-row", list).reduce((sum, item) => {
+      const usageText = $("em", item) ? $("em", item).textContent : "";
+      const match = usageText.match(/(\d+)\s*tok/);
+      return sum + (match ? Number(match[1]) : 0);
+    }, 0);
+    const totalEl = $("#agentTokenTotal");
+    if (totalEl) totalEl.textContent = total.toLocaleString("zh-CN") + " tokens";
+  }
+
+  async function startGeneration(config, mode) {
+    if (state.generation) return;
     const generation = {
       mode: mode || "new",
-      config,
-      startedAt,
+      config: config,
+      startedAt: Date.now(),
       timer: null,
-      cancelled: false
+      controller: new AbortController(),
+      cancelled: false,
+      ai: false
     };
     state.generation = generation;
+    document.body.classList.add("is-generating");
+    renderGenerationScreen(config, mode, false, localGenerationSteps());
 
-    function update() {
-      if (!state.generation || state.generation.cancelled) return;
-      const elapsed = Date.now() - startedAt;
-      const progress = clamp(elapsed / totalMs, 0, 1);
-      const percent = Math.floor(progress * 100);
-      const bar = $("#genProgressBar");
-      const percentEl = $("#genPercent");
-      if (bar) bar.style.width = percent + "%";
-      if (percentEl) percentEl.textContent = percent + "%";
+    let status = { available: false };
+    if (window.EchoQuestAgent && typeof window.EchoQuestAgent.health === "function") {
+      try {
+        status = await window.EchoQuestAgent.health();
+      } catch (error) {
+        status = { available: false, error: error.message };
+      }
+    }
+    if (!state.generation || state.generation !== generation || generation.cancelled) return;
 
-      const stageIndex = Math.min(GEN_STAGES.length - 1, Math.floor(progress * GEN_STAGES.length));
-      $$(".gen-stage").forEach((el, index) => {
-        el.classList.toggle("active", index === stageIndex);
-        el.classList.toggle("done", index < stageIndex);
-        const stateEl = $(".gen-stage-state", el);
-        if (stateEl) stateEl.textContent = index < stageIndex ? "完成" : (index === stageIndex ? "进行中" : "等待");
-        const iconEl = $(".gen-stage-icon", el);
-        if (iconEl) iconEl.innerHTML = index < stageIndex ? icon("check") : (index === stageIndex ? icon("orbit") : icon("circle"));
+    if (status.available) {
+      generation.ai = true;
+      generation.model = status.model || "";
+      renderGenerationScreen(config, mode, true, agentGenerationSteps());
+      beginAgentGeneration(generation);
+    } else {
+      generation.ai = false;
+      renderGenerationScreen(config, mode, false, localGenerationSteps());
+      setGenerationProgress(2, "Agent 未启用，使用本地剧情引擎", "正在读取你的设定…");
+      beginLocalGeneration(generation);
+    }
+  }
+
+  async function beginAgentGeneration(generation) {
+    const agent = window.EchoQuestAgent;
+    if (!agent) {
+      beginLocalGeneration(generation);
+      return;
+    }
+    updateGenerationStage("prepare", "active", "读取你写下的地点、人物与物件");
+    setGenerationProgress(4, "正在读取故事设定…", "Agent 正在准备故事上下文…");
+    try {
+      const result = await agent.generate(generation.config, {
+        signal: generation.controller.signal,
+        onEvent: (event) => {
+          if (!state.generation || state.generation !== generation || generation.cancelled) return;
+          if (event.type === "stage") {
+            updateGenerationStage(event.id, event.status, event.detail);
+            if (typeof event.progress === "number") {
+              setGenerationProgress(event.progress, event.detail || "Agent 正在工作…", event.detail || "Agent 正在工作…");
+            }
+          } else if (event.type === "trace") {
+            appendGenerationTrace(event.trace);
+          } else if (event.type === "bible" && event.data) {
+            const statusEl = $("#genStatus");
+            if (statusEl) statusEl.textContent = "故事圣经已完成：《" + (event.data.title || "未命名") + "》";
+          } else if (event.type === "nodes") {
+            const nodeCount = $("#genNodeCount");
+            if (nodeCount) nodeCount.textContent = Object.keys(event.data || {}).length + " / 12 节点";
+          }
+        }
       });
-      const status = $("#genStatus");
-      if (status) status.textContent = GEN_STAGES[stageIndex].detail + "…";
-      const snippet = $("#genSnippet");
-      if (snippet) snippet.textContent = GEN_SNIPPETS[Math.min(GEN_SNIPPETS.length - 1, Math.floor(progress * GEN_SNIPPETS.length))];
+      if (!state.generation || state.generation !== generation || generation.cancelled) return;
+      setGenerationProgress(100, "故事已装订完成", "Agent 工作流完成");
+      const nodeCount = $("#genNodeCount");
+      if (nodeCount) nodeCount.textContent = result.game.nodeOrder.length + " / " + result.game.nodeOrder.length + " 节点";
+      completeGeneration(result.game, generation.mode, { ai: true });
+    } catch (error) {
+      if (error && (error.name === "AbortError" || generation.cancelled)) return;
+      const message = error && error.message ? error.message : "Agent 调用失败";
+      const activeStage = document.querySelector(".gen-stage.active");
+      if (activeStage) updateGenerationStage(activeStage.dataset.genStage, "error", message);
+      appendGenerationTrace({ status: "error", tool: "error", detail: message, model: "" });
+      setGenerationProgress(88, "已切换本地剧情引擎", "Agent 暂不可用，正在使用本地剧情引擎完成故事…");
+      generation.fallbackError = message;
+      await new Promise((resolve) => window.setTimeout(resolve, 850));
+      if (!state.generation || state.generation !== generation || generation.cancelled) return;
+      const game = buildLocalGame(generation.config, generation.mode);
+      game.agentTrace = (game.agentTrace || []).concat([{
+        id: "fallback",
+        status: "warning",
+        detail: "AI Agent 不可用，已切换到本地剧情引擎：" + message,
+        tool: "fallback",
+        latencyMs: null,
+        usage: null,
+        at: new Date().toISOString()
+      }]);
+      game.generation.aiAgent = false;
+      game.generation.fallback = true;
+      game.generation.agentError = message;
+      completeGeneration(game, generation.mode, { fallback: true });
+    }
+  }
+
+  function beginLocalGeneration(generation) {
+    const steps = localGenerationSteps();
+    const startedAt = Date.now();
+    const totalMs = 4400;
+    function tick() {
+      if (!state.generation || state.generation !== generation || generation.cancelled) return;
+      const progress = clamp((Date.now() - startedAt) / totalMs, 0, 1);
+      const percent = Math.floor(progress * 100);
+      const stageIndex = Math.min(steps.length - 1, Math.floor(progress * steps.length));
+      steps.forEach((step, index) => {
+        if (index < stageIndex) updateGenerationStage(step.id, "done");
+        else if (index === stageIndex) updateGenerationStage(step.id, "active");
+        else updateGenerationStage(step.id, "waiting");
+      });
+      const stage = GEN_STAGES[stageIndex];
+      setGenerationProgress(percent, GEN_SNIPPETS[Math.min(GEN_SNIPPETS.length - 1, Math.floor(progress * GEN_SNIPPETS.length))], stage.detail + "…");
       const nodeCount = $("#genNodeCount");
       if (nodeCount) nodeCount.textContent = Math.min(12, Math.max(1, Math.floor(progress * 15))) + " / 12 节点";
-
       if (progress >= 1) {
         window.clearInterval(generation.timer);
         generation.timer = null;
-        finishGeneration();
+        const game = buildLocalGame(generation.config, generation.mode);
+        completeGeneration(game, generation.mode, { local: true });
       }
     }
-
-    generation.timer = window.setInterval(update, 80);
-    update();
+    generation.timer = window.setInterval(tick, 80);
+    tick();
   }
 
-  function finishGeneration() {
-    const generation = state.generation;
-    if (!generation || generation.cancelled) return;
-    const config = generation.config;
-    const existing = generation.mode === "regenerate" ? getGame(config.gameId) : null;
+  function buildLocalGame(config, mode) {
+    const existing = mode === "regenerate" ? getGame(config.gameId) : null;
     const game = D.createCustomGame({
       id: config.gameId || uid("story"),
       title: config.title,
@@ -1013,6 +1186,16 @@
     game.published = existing ? existing.published : false;
     game.isGenerated = true;
     game.updatedAt = new Date().toISOString();
+    return game;
+  }
+
+  function completeGeneration(game, mode, options) {
+    const generation = state.generation;
+    if (!generation || generation.cancelled) return;
+    const existing = mode === "regenerate" ? getGame(game.id) : null;
+    if (existing) game.published = existing.published;
+    game.updatedAt = new Date().toISOString();
+    if (game.agentTrace) game.generation.trace = game.agentTrace;
 
     const overlay = $("#overlayRoot");
     if (overlay) overlay.innerHTML = "";
@@ -1023,7 +1206,12 @@
     state.studioNodeId = game.startNodeId;
     navigate("/studio/" + game.id);
     if (parseHash().name === "studio") renderRoute();
-    showToast(generation.mode === "regenerate" ? "新版本已装订完成" : "故事初稿已完成", "sparkles");
+    const message = options && options.fallback
+      ? "Agent 暂不可用，已用本地引擎完成故事"
+      : options && options.local
+        ? "故事初稿已完成"
+        : "Agent 已完成故事初稿";
+    showToast(message, "sparkles");
   }
 
   function cancelGeneration(silent) {
@@ -1032,6 +1220,9 @@
       return;
     }
     state.generation.cancelled = true;
+    if (state.generation.controller) {
+      try { state.generation.controller.abort(); } catch (error) { /* noop */ }
+    }
     if (state.generation.timer) window.clearInterval(state.generation.timer);
     state.generation = null;
     document.body.classList.remove("is-generating");
@@ -1044,36 +1235,37 @@
   /* Studio                                                              */
   /* ------------------------------------------------------------------ */
 
-  const LEVEL_MAP = {
-    n0: 0,
-    n1: 1,
-    n2: 1,
-    n3: 1,
-    n4: 2,
-    n5: 2,
-    n7: 3,
-    e1: 4,
-    e2: 4,
-    e3: 4
-  };
-
   function buildGraphLayout(game) {
-    const levels = [[], [], [], [], []];
-    game.nodeOrder.forEach((nodeId) => {
-      const node = game.nodes[nodeId];
-      if (!node) return;
-      const level = LEVEL_MAP[nodeId] != null ? LEVEL_MAP[nodeId] : (node.isEnding ? 4 : 1);
-      levels[level].push(nodeId);
-    });
     const cardW = 190;
     const cardH = 104;
     const gapX = 64;
     const gapY = 30;
     const marginX = 36;
     const marginY = 44;
+    const order = (game.nodeOrder || []).filter((id) => game.nodes[id]);
+    const start = game.startNodeId && game.nodes[game.startNodeId] ? game.startNodeId : order[0];
+    const levelById = {};
+    if (start) levelById[start] = 0;
+    const queue = start ? [start] : [];
+    while (queue.length) {
+      const current = queue.shift();
+      const node = game.nodes[current];
+      (node.choices || []).forEach((choice) => {
+        if (!game.nodes[choice.to] || levelById[choice.to] != null) return;
+        levelById[choice.to] = (levelById[current] || 0) + 1;
+        queue.push(choice.to);
+      });
+    }
+    let maxLevel = 0;
+    order.forEach((id) => {
+      if (levelById[id] == null) levelById[id] = 0;
+      maxLevel = Math.max(maxLevel, levelById[id]);
+    });
+    const levels = Array.from({ length: maxLevel + 1 }, () => []);
+    order.forEach((id) => levels[levelById[id]].push(id));
     const maxRows = Math.max(...levels.map((level) => level.length), 1);
     const height = maxRows * cardH + (maxRows - 1) * gapY + marginY * 2;
-    const width = marginX * 2 + 5 * cardW + 4 * gapX;
+    const width = marginX * 2 + levels.length * cardW + Math.max(0, levels.length - 1) * gapX;
     const positions = {};
     levels.forEach((ids, levelIndex) => {
       const totalHeight = ids.length * cardH + (ids.length - 1) * gapY;
@@ -1158,6 +1350,7 @@
               <p>${escapeHtml(game.subtitle)}</p>
             </div>
             <div class="studio-actions">
+              ${game.agentTrace && game.agentTrace.length ? `<button class="btn btn-ghost btn-sm agent-trace-button" type="button" data-action="open-agent-trace" data-game-id="${game.id}">${icon("orbit")} Agent 轨迹</button>` : ""}
               <button class="btn btn-ghost btn-sm" type="button" data-action="regenerate-game">${icon("refresh")} 重新生成整局</button>
               <a class="btn btn-secondary btn-sm" href="#/play/${encodeURIComponent(game.id)}?preview=1&new=1">${icon("eye")} 预览</a>
               <a class="btn btn-primary btn-sm" href="#/play/${encodeURIComponent(game.id)}?new=1">${icon("play")} 开始游玩</a>
@@ -1961,7 +2154,8 @@
   Object.assign(ICONS, {
     circle: '<circle cx="12" cy="12" r="8"/>',
     flag: '<path d="M5 21V4M5 4h11l-2 5 2 5H5"/>',
-    bookmark: '<path d="M6 3h12v18l-6-4-6 4Z"/>'
+    bookmark: '<path d="M6 3h12v18l-6-4-6 4Z"/>',
+    alert: '<path d="M10.3 3.7 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.7a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>'
   });
 
   function showToast(message, iconName) {
@@ -2351,6 +2545,55 @@
     state.modal = { type: "info", gameId: game.id };
   }
 
+  function openAgentTrace(game) {
+    state.modal = { type: "agent", gameId: game.id };
+    const trace = game.agentTrace || [];
+    const steps = (window.EchoQuestAgent && window.EchoQuestAgent.STEPS) || [];
+    const labels = {};
+    steps.forEach((step) => { labels[step.id] = step.label; });
+    const llmEntries = trace.filter((entry) => /^LLM|architect|write|repair/.test((entry.tool || "") + " " + (entry.id || "")));
+    const totalTokens = llmEntries.reduce((sum, entry) => sum + ((entry.usage && entry.usage.total_tokens) || 0), 0);
+    const totalLatency = trace.reduce((sum, entry) => sum + (entry.latencyMs || 0), 0);
+    const isFallback = game.generation && game.generation.fallback;
+    const statusLabel = {
+      success: "成功",
+      warning: "警告",
+      error: "失败",
+      skipped: "跳过"
+    };
+    const html = `
+      ${modalHeader("AGENT WORKFLOW", "故事是如何生成的", "这是一次真实的“架构 → 撰写 → 校验 → 编译”Agent 工作流。API Key 只保存在服务器端。")}
+      <div class="agent-summary-grid">
+        <div><span>模式</span><strong>${isFallback ? "本地降级" : "AI Agent"}</strong></div>
+        <div><span>模型</span><strong>${escapeHtml(game.generation && game.generation.model || "—")}</strong></div>
+        <div><span>Token</span><strong>${totalTokens ? totalTokens.toLocaleString("zh-CN") : "—"}</strong></div>
+        <div><span>总耗时</span><strong>${totalLatency ? (totalLatency / 1000).toFixed(1) + "s" : "—"}</strong></div>
+      </div>
+      ${isFallback ? `<div class="modal-notice">${icon("alert")} 本次生成调用了本地降级引擎：${escapeHtml(game.generation.agentError || "AI 服务不可用")}</div>` : ""}
+      <div class="agent-log">
+        ${trace.map((entry, index) => {
+          const status = entry.status || "success";
+          const tool = entry.tool || "agent";
+          const usage = entry.usage && entry.usage.total_tokens ? entry.usage.total_tokens.toLocaleString("zh-CN") + " tokens" : "";
+          const latency = entry.latencyMs ? (entry.latencyMs / 1000).toFixed(1) + "s" : "";
+          const label = labels[entry.id] || tool;
+          return `<div class="agent-log-entry ${status}">
+            <span class="agent-log-index">${pad2(index + 1)}</span>
+            <span class="agent-log-icon">${icon(status === "error" ? "x" : status === "warning" ? "alert" : tool === "validator" ? "shield" : tool === "compiler" ? "layers" : tool === "fallback" ? "refresh" : "sparkles")}</span>
+            <div class="agent-log-body">
+              <div class="agent-log-title"><strong>${escapeHtml(label)}</strong><span>${escapeHtml(tool)}</span></div>
+              <p>${escapeHtml(entry.detail || "")}</p>
+              <div class="agent-log-meta">${[latency, usage, entry.model || ""].filter(Boolean).map(escapeHtml).join(" · ")}</div>
+            </div>
+            <span class="agent-log-status ${status}">${statusLabel[status] || status}</span>
+          </div>`;
+        }).join("") || `<p class="agent-trace-empty">这篇故事还没有 Agent 轨迹。</p>`}
+      </div>
+      <div class="modal-foot"><span>${icon("shield")} 密钥不进入浏览器，所有模型调用由服务器代理</span><button class="btn btn-secondary btn-sm" type="button" data-action="close-modal">关闭</button></div>`;
+    openModal(html, { label: "Agent 工作流", className: "agent-modal" });
+    state.modal = { type: "agent", gameId: game.id };
+  }
+
   function openAbout() {
     state.modal = { type: "about" };
     const html = `
@@ -2358,7 +2601,7 @@
       <div class="about-body">
         <p>EchoQuest 是一个 <strong>AI 互动文字游戏生成平台</strong> 的网页原型。它面向有故事创意、但缺少编程能力的创作者与学生：输入世界观与角色设定，获得一棵带有分支选项、属性变化与多结局的剧情树。</p>
         <div class="about-grid">
-          <div><span>01</span><strong>AI 初稿</strong><p>本原型使用本地剧情引擎模拟生成过程，不依赖网络或真实模型调用。</p></div>
+          <div><span>01</span><strong>AI 初稿</strong><p>配置服务器 API 时使用真实的“架构 → 撰写 → 校验 → 编译”Agent 工作流；接口不可用时自动回退本地剧情引擎。</p></div>
           <div><span>02</span><strong>可视化编辑</strong><p>点击故事结构图上的任意节点，改写文本、地点与时间。</p></div>
           <div><span>03</span><strong>本地存档</strong><p>手动存档、自动存档与结局收集都保存在当前浏览器。</p></div>
           <div><span>04</span><strong>自由行动</strong><p>除了选项，也可以输入自己的行动；本地引擎会根据关键词续写或推进剧情。</p></div>
@@ -2619,6 +2862,11 @@
       if (action === "delete-game") {
         const game = getGame(actionEl.dataset.gameId);
         if (game) openDeleteGame(game);
+        return;
+      }
+      if (action === "open-agent-trace") {
+        const game = getGame(actionEl.dataset.gameId || state.route.param);
+        if (game) openAgentTrace(game);
         return;
       }
       if (action === "open-about") {

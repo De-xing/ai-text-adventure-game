@@ -66,3 +66,12 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# local secrets
+.env
+.env.*
+
+# SQLite sidecars (the packaged database itself is tracked)
+*.db-wal
+*.db-shm
+*.db-journal

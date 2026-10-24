@@ -1,74 +1,99 @@
-# EchoQuest 前端（互动叙事原型）
+# EchoQuest 前端
 
-由 `EchoQuest-单文件版(1).html` 拆分而来的无构建静态前端，保留原型的全部页面与交互：
-
-- 发现故事 / 故事广场
-- 创作工坊：背景输入、参数配置、生成进度、开场预览
-- 创作台：故事树、节点编辑、角色与设定档案
-- 游玩页：剧情、选项、自由行动、属性、背包、结局
-- 我的作品 / 存档 / 历史 / 分享
-
-当前是**纯前端本地原型**，没有登录注册、真实 AI 生成或后端 API。剧情由内置的确定性生成器合成，数据保存在浏览器 `localStorage`。
+EchoQuest 互动叙事 Web 前端。当前版本由新版单文件原型拆分而来，包含完整的发现页、创作工坊、生成进度、创作台、游玩页、作品库与存档系统。
 
 ## 运行
 
-无需安装依赖、无需构建。建议在项目根目录启动静态服务器：
+无需安装依赖、无需构建。
+
+Windows：
+
+```text
+start.bat
+```
+
+或者手动启动静态服务器：
 
 ```bash
 cd code/frontend
-python -m http.server 5173
+python -m http.server 8080 --bind 127.0.0.1
 ```
 
-浏览器访问：<http://localhost:5173>
+访问 <http://127.0.0.1:8080>。
 
-也可以直接双击 `index.html`，但使用本地服务器更接近真实部署环境，也能避免未来的模块化 / fetch 请求受 `file://` 限制。
+也可以直接双击 `index.html`，但通过 HTTP 访问更接近真实环境；后端接口探测在 `file://` 下会自动跳过。
 
 ## 目录结构
 
 ```text
 code/frontend/
-├── index.html                  # 页面骨架、站点头尾与脚本入口
+├── index.html
 ├── css/
-│   └── app.css                 # 全部视觉样式与响应式规则
-└── js/
-    ├── data.js                 # 内置题材包、示例故事、演示作品
-    ├── story-generator.js      # 本地确定性故事生成器
-    └── app.js                  # 状态、路由、页面渲染与交互
+│   └── app.css
+├── js/
+│   ├── data.js              题材包、示例作品
+│   ├── story-generator.js   本地剧情生成器
+│   ├── agent-client.js      Agent API 客户端与故事编译
+│   └── app.js               路由、页面、存档、游玩
+├── start.bat
+├── start.sh
+└── README.md
 ```
 
-脚本按 `data.js → story-generator.js → app.js` 的顺序加载，都是普通脚本（非 ES Module），因此不需要构建工具。
+脚本按 `data.js → story-generator.js → agent-client.js → app.js` 的顺序加载，全部是普通脚本，不需要构建工具。
+
+## 后端行为
+
+`agent-client.js` 会请求：
+
+| 方法 | 路径 | 说明 |
+|---|---|---|
+| GET | `/api/health` | 探测 AI 后端是否可用 |
+| POST | `/api/agent/architect` | 生成故事圣经和节点图 |
+| POST | `/api/agent/write` | 生成节点正文与选项 |
+| POST | `/api/agent/repair` | 修复结构问题 |
+
+当前仓库没有实现这些接口，因此页面会：
+
+1. 探测 `/api/health` 失败；
+2. 自动降级到 `story-generator.js` 的本地剧情引擎；
+3. 继续完整游玩。
+
+后端实现和数据库结构见：
+
+- [后端说明](../backend/README.md)
+- [数据库目录](../backend/database/)
+- [架构文档](../../docs/software/architecture.md)
 
 ## 本地数据
 
-原型使用以下 `localStorage` 键：
+作品、草稿、存档、结局目前都保存在浏览器 `localStorage`：
 
 | 键 | 内容 |
 |---|---|
 | `echoquest.userGames.v1` | 用户创建的故事 |
-| `echoquest.overrides.v1` | 节点等人工编辑覆盖 |
+| `echoquest.overrides.v1` | 节点编辑覆盖 |
 | `echoquest.draft.v1` | 创作页草稿 |
 | `echoquest.saves.v1` | 手动存档 |
 | `echoquest.autosave.v1` | 自动存档 |
 | `echoquest.endings.v1` | 已解锁结局 |
 
-头像区域是原型体验账号，不涉及真实注册。
+清空浏览器数据会丢失这些内容，且无法跨设备同步。
 
-## 后续接入后端的位置
+## 尚未实现
 
-| 能力 | 当前实现 | 接入建议 |
-|---|---|---|
-| AI 生成整局 | `js/app.js` 的 `startGeneration()` + `js/story-generator.js` | 新增 `js/api.js`，由后端生成故事树后替换本地生成结果 |
-| 实时续写 | `renderPlay()` / 自由行动提交逻辑 | 提交当前节点、属性和选择，由后端返回下一个节点 |
-| 登录注册 | 无，页头为静态体验账号 | 增加登录/注册页或弹窗，建立会话后再加载用户数据 |
-| 作品与存档 | `readStore()` / `writeStore()` + `STORE_KEYS` | 用后端接口替换读写层，保留本地回退 |
-| 分享 | 前端生成分享链接 | 改为后端短链或作品公开页 |
+- 账号注册、登录与服务端会话
+- 服务端作品库与跨设备存档
+- 真实 AI Agent 接口
+- 作品发布、审核与公网分享
+- 数据库读写
 
-建议接入时新增 `js/api.js` 统一封装请求、鉴权和错误处理，不要把 `fetch` 分散到渲染函数里。
+前端目前是可直接演示的本地原型，不是完整生产系统。
 
 ## 开发约定
 
-- 保持无构建步骤，新增脚本继续使用普通 `<script>` 并在 `index.html` 中按依赖顺序引入。
-- 文案与数据分离：题材、模板、示例内容放在 `data.js`，生成逻辑放在 `story-generator.js`。
-- 所有由 AI 或用户生成的文本在插入 DOM 前继续使用现有 `escapeHtml()`，避免 XSS。
-- 修改样式时优先补充 `app.css` 末尾的响应式规则，不要破坏现有断点。
-- Google Fonts 仅在联网时生效，离线会自动回退到系统中文字体。
+- 保持无构建步骤，新增脚本继续用普通 `<script>` 按依赖顺序引入。
+- 所有用户或 AI 文本插入 DOM 前继续使用 `escapeHtml()`。
+- 页面调用后端的代码集中在 `agent-client.js`，不要把 `fetch` 分散到各渲染函数。
+- 页面接口使用绝对路径 `/api/...`，部署在子目录时需要反向代理。
+- Google Fonts 仅在联网时生效，离线会回退到系统中文字体。

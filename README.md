@@ -1,46 +1,86 @@
-# AI Text Adventure C++
-A text adventure game written in C++, powered by LLM.
+# EchoQuest · AI 互动文字游戏平台
 
-## 项目介绍
-这是一款C++开发的AI文字冒险游戏。
-游戏核心逻辑（玩家血量、背包、地点、存档）由C++本地管理；
-剧情、场景描述、可执行选项由大语言模型生成。
+EchoQuest（回响）是一个把一段世界观设定生成成可游玩互动叙事的 Web 原型。用户输入故事背景与参数，得到带角色、分支、属性、结局的可编辑故事；也可以直接进入已有作品游玩。
 
-两种运行模式可选：
-1. 云端API模式：调用大模型在线接口生成剧情，需要网络与API Key
-2. 本地Ollama模式：本地部署大模型，断网离线游玩
+当前仓库的主实现是 Web 前端与 SQLite 数据模型。项目最初规划过 C++ 控制台版本，但该版本源码目前不在本仓库中。
 
-> 本项目仅对指定协作者开放代码修改权限。外部用户仅可阅读源码，未经许可不得修改、二次分发或商用。
+## 当前能力
 
-## 功能特性
--  玩家状态管理：生命值、背包物品、当前场景记录
--  对话历史上下文，AI连贯生成剧情
--  结构化返回，自动解析场景与行动选项
--  存档/读档功能（可加密存档防止篡改）
--  控制台文字交互界面
+- 故事发现页与示例作品
+- 创作工坊：背景输入、类型/基调/长度/结局数配置
+- AI Agent 前端链路：架构 → 撰写 → 校验 → 修复 → 编译
+- 无后端时自动降级到本地剧情引擎
+- 创作台：故事树、节点编辑、角色与设定档案
+- 游玩：选项、自由行动、属性、背包、历史回看、结局收集
+- 自动存档、手动存档、Markdown 导出
 
-## 环境依赖
-### 编译依赖
-- C++17 及以上
-- libcurl：用于HTTP网络请求
-- nlohmann/json：JSON解析库
-- CMake（推荐用于构建项目）
+## 快速开始
 
-### 本地Ollama模式硬件参考
-- 推荐内存：16GB RAM
-- 推荐显存：≥6GB 独立显存
-- 推荐模型：qwen2.5:7b (Q4量化，中文表现优秀)
+Web 前端无需安装依赖、无需构建：
 
-## 快速构建 & 运行
 ```bash
-# 1.克隆仓库
-git clone https://github.com/De-xing/ai-text-adventure-cpp.git
-cd ai-text-adventure-cpp
+cd code/frontend
+python -m http.server 8080 --bind 127.0.0.1
+```
 
-# 2.创建构建目录
-mkdir build && cd build
-cmake ..
-make
+Windows 也可以双击 `code/frontend/start.bat`。
 
-# 3.运行程序
-./ai-text-adventure
+打开 <http://127.0.0.1:8080>。
+
+## 当前状态与边界
+
+这是一个**前端可完整游玩、后端尚未实现**的原型：
+
+- 页面会探测 `/api/health`；后端不可用时使用本地剧情引擎，因此可以直接演示。
+- 作品、草稿、存档、结局保存在浏览器 `localStorage`。
+- 真实 AI Agent、注册登录、跨设备同步、作品发布与审核尚未实现。
+- SQLite 数据库已建好 31 张表和 4 个视图，但还没有接入页面。
+
+相关说明：
+
+- [前端说明](code/frontend/README.md)
+- [后端与数据库说明](code/backend/README.md)
+- [架构设计](docs/software/architecture.md)
+- [功能需求](docs/requirements/functional_spec.md)
+
+## 目录结构
+
+```text
+.
+├── code/
+│   ├── frontend/             Web 前端（可直接运行）
+│   ├── backend/              SQLite 数据模型（暂无服务端代码）
+│   └── core_engine/          C++ 核心引擎预留目录（空）
+├── docs/
+│   ├── requirements/         需求规格、用户故事
+│   ├── software/             架构与数据设计
+│   └── mgmt/                 项目管理文档
+├── tests/                    测试预留目录
+└── README.md
+```
+
+## 数据库
+
+数据库文件：[`code/backend/database/echoquest.db`](code/backend/database/echoquest.db)
+
+- SQLite 3.35+
+- 31 张表 + 4 个视图
+- 当前为空库，不含账号、作品或密钥
+
+重建：
+
+```bash
+cd code/backend/database
+python init_db.py
+```
+
+## 运行前提
+
+- 静态前端：任意现代浏览器
+- 本地服务器：Python 3（`http.server` 即可）
+- AI 后端：尚未提供；需要按架构文档实现 `/api/health` 与 `/api/agent/*`
+- 云端或 Ollama 模型：只有接入后端后才会生效
+
+## 许可
+
+本项目仅对指定协作者开放代码修改权限。外部用户仅可阅读源码，未经许可不得修改、二次分发或商用。详见 [LICENSE](LICENSE)。
