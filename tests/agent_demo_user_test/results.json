@@ -1,0 +1,44 @@
+{
+  "base_url": "http://127.0.0.1:8097",
+  "executed_at": "2026-11-14T14:41:36+0800",
+  "results": [
+    {
+      "id": "E2E-01",
+      "status": "PASS",
+      "detail": "4 cards; sample reached ending; pageErrors=0"
+    },
+    {
+      "id": "E2E-02 / IT-STO-01",
+      "status": "PASS",
+      "detail": "local generated nodes=10; draft persisted and restored; pageErrors=0"
+    },
+    {
+      "id": "IT-GEN-07",
+      "status": "PASS",
+      "detail": "short background blocked; inline error visible; no navigation"
+    },
+    {
+      "id": "IT-SEC-01",
+      "status": "PASS",
+      "detail": "payload rendered as text; no script execution; no img[onerror]"
+    },
+    {
+      "id": "E2E-07",
+      "status": "PASS",
+      "detail": "375x812; no horizontal scroll; first choice visible"
+    },
+    {
+      "id": "IT-PLAY-12",
+      "status": "PASS",
+      "detail": "preview badge shown; preview mode did not write autosave"
+    },
+    {
+      "id": "E2E-10",
+      "status": "PASS",
+      "detail": "file:// discover rendered; no uncaught page errors"
+    }
+  ],
+  "pass": 7,
+  "fail": 0,
+  "blocked": 0
+}
