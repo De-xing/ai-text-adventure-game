@@ -1,0 +1,169 @@
+************* Module server
+server.py:449:0: C0301: Line too long (131/120) (line-too-long)
+server.py:171:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:176:15: W0718: Catching too general exception Exception (broad-exception-caught)
+server.py:192:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:196:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:201:0: C0115: Missing class docstring (missing-class-docstring)
+server.py:209:4: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:229:4: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:238:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:254:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:254:0: R0914: Too many local variables (17/15) (too-many-locals)
+server.py:321:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:364:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:364:0: R0914: Too many local variables (30/15) (too-many-locals)
+server.py:377:22: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+server.py:383:26: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+server.py:387:26: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+server.py:403:30: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+server.py:410:34: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+server.py:417:26: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+server.py:447:34: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+server.py:364:0: R0912: Too many branches (34/12) (too-many-branches)
+server.py:364:0: R0915: Too many statements (77/50) (too-many-statements)
+server.py:457:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:483:26: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+server.py:457:32: W0613: Unused argument 'ending_count' (unused-argument)
+server.py:489:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:501:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:505:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:517:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:526:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:537:0: C0115: Missing class docstring (missing-class-docstring)
+server.py:541:4: W0221: Number of parameters was 3 in 'BaseHTTPRequestHandler.log_message' and is now 3 in overriding 'Handler.log_message' method (arguments-differ)
+server.py:542:17: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+server.py:580:4: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:580:4: C0103: Method name "do_GET" doesn't conform to snake_case naming style (invalid-name)
+server.py:632:4: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:632:4: C0103: Method name "do_POST" doesn't conform to snake_case naming style (invalid-name)
+server.py:632:4: R0914: Too many local variables (19/15) (too-many-locals)
+server.py:646:19: R1732: Consider using 'with' for resource-allocating operations (consider-using-with)
+server.py:721:15: W0718: Catching too general exception Exception (broad-exception-caught)
+server.py:632:4: R0911: Too many return statements (10/6) (too-many-return-statements)
+server.py:632:4: R0912: Too many branches (14/12) (too-many-branches)
+server.py:632:4: R0915: Too many statements (55/50) (too-many-statements)
+server.py:729:0: C0116: Missing function or method docstring (missing-function-docstring)
+server.py:732:13: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+
+
+Report
+======
+450 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |1      |NC         |NC         |100.00      |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |2      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|method   |11     |NC         |NC         |63.64       |18.18    |
++---------+-------+-----------+-----------+------------+---------+
+|function |15     |NC         |NC         |6.67        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+745 lines have been analyzed
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |617    |82.82 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|docstring |67     |8.99  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|comment   |6      |0.81  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|empty     |55     |7.38  |NC       |NC         |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |NC       |NC         |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |NC       |NC         |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |33     |NC       |NC         |
++-----------+-------+---------+-----------+
+|refactor   |9      |NC       |NC         |
++-----------+-------+---------+-----------+
+|warning    |4      |NC       |NC         |
++-----------+-------+---------+-----------+
+|error      |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+
+
+
+% errors / warnings by module
+-----------------------------
+
++-------+------+--------+---------+-----------+
+|module |error |warning |refactor |convention |
++=======+======+========+=========+===========+
+|server |0.00  |100.00  |100.00   |100.00     |
++-------+------+--------+---------+-----------+
+
+
+
+Messages
+--------
+
++---------------------------+------------+
+|message id                 |occurrences |
++===========================+============+
+|missing-function-docstring |18          |
++---------------------------+------------+
+|consider-using-f-string    |10          |
++---------------------------+------------+
+|too-many-locals            |3           |
++---------------------------+------------+
+|too-many-statements        |2           |
++---------------------------+------------+
+|too-many-branches          |2           |
++---------------------------+------------+
+|missing-class-docstring    |2           |
++---------------------------+------------+
+|invalid-name               |2           |
++---------------------------+------------+
+|broad-exception-caught     |2           |
++---------------------------+------------+
+|unused-argument            |1           |
++---------------------------+------------+
+|too-many-return-statements |1           |
++---------------------------+------------+
+|line-too-long              |1           |
++---------------------------+------------+
+|consider-using-with        |1           |
++---------------------------+------------+
+|arguments-differ           |1           |
++---------------------------+------------+
+
+
+
+
+-----------------------------------
+Your code has been rated at 8.98/10
+

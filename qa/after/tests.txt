@@ -1,0 +1,37 @@
+[echoquest] 127.0.0.1 - "POST /api/agent/architect HTTP/1.1" 200 -
+[echoquest] 127.0.0.1 - "POST /api/agent/write HTTP/1.1" 200 -
+python : test_architect_and_write_routes (test_http.HandlerIntegrationTests.test_architect_and_write_routes) ... ok
+所在位置 行:1 字符: 129
++ ... :new($false); python -m unittest discover -s qa/tests -v 2>&1 | Tee-O ...
++                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_architect_..._routes) ... ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[echoquest] 127.0.0.1 - "POST /api/agent/architect HTTP/1.1" 403 -
+test_bad_origin_is_rejected (test_http.HandlerIntegrationTests.test_bad_origin_is_rejected) ... ok
+[echoquest] 127.0.0.1 - "GET /api/health HTTP/1.1" 200 -
+test_health_endpoint (test_http.HandlerIntegrationTests.test_health_endpoint) ... ok
+test_fenced_json (test_server.ExtractJsonTests.test_fenced_json) ... ok
+test_non_json_raises (test_server.ExtractJsonTests.test_non_json_raises) ... ok
+test_plain_json (test_server.ExtractJsonTests.test_plain_json) ... ok
+test_trailing_comma_is_repaired (test_server.ExtractJsonTests.test_trailing_comma_is_repaired) ... ok
+test_cycle_is_left_untouched (test_server.PlanOrderTests.test_cycle_is_left_untouched) ... ok
+test_reorders_backward_declared_nodes (test_server.PlanOrderTests.test_reorders_backward_declared_nodes) ... ok
+test_empty_nodes_is_severe (test_server.PlanSeverityTests.test_empty_nodes_is_severe) ... ok
+test_missing_start_is_severe (test_server.PlanSeverityTests.test_missing_start_is_severe) ... ok
+test_valid_plan_is_not_severe (test_server.PlanSeverityTests.test_valid_plan_is_not_severe) ... ok
+test_truncates_and_strips (test_server.SafeTextTests.test_truncates_and_strips) ... ok
+test_backward_edge_is_reported (test_server.ValidateBibleTests.test_backward_edge_is_reported) ... ok
+test_missing_start_node_is_reported (test_server.ValidateBibleTests.test_missing_start_node_is_reported) ... ok
+test_unreachable_node_is_reported (test_server.ValidateBibleTests.test_unreachable_node_is_reported) ... ok
+test_valid_plan_has_no_issues (test_server.ValidateBibleTests.test_valid_plan_has_no_issues) ... ok
+test_wrong_ending_count_is_reported (test_server.ValidateBibleTests.test_wrong_ending_count_is_reported) ... ok
+test_empty_text_is_reported (test_server.ValidateNodesTests.test_empty_text_is_reported) ... ok
+test_missing_node_is_reported (test_server.ValidateNodesTests.test_missing_node_is_reported) ... ok
+test_valid_content_has_no_issues (test_server.ValidateNodesTests.test_valid_content_has_no_issues) ... ok
+test_wrong_choice_count_is_reported (test_server.ValidateNodesTests.test_wrong_choice_count_is_reported) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.577s
+
+OK

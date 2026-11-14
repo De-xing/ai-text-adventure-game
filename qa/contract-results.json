@@ -1,0 +1,32 @@
+{
+  "executed_at": "2026-11-14T14:44:37+0800",
+  "results": [
+    {
+      "id": "CT-01",
+      "status": "PASS",
+      "detail": "HTTP 200; keys=['ai', 'model', 'ok', 'provider']"
+    },
+    {
+      "id": "CT-02 / 请求校验",
+      "status": "PASS",
+      "detail": "HTTP 400; error=缺少故事背景"
+    },
+    {
+      "id": "CT-02 / 同源校验",
+      "status": "PASS",
+      "detail": "HTTP 403"
+    },
+    {
+      "id": "CT-02 / 请求体上限",
+      "status": "PASS",
+      "detail": "HTTP 400; error=请求体为空或过大"
+    },
+    {
+      "id": "CT-02 / 未知接口",
+      "status": "PASS",
+      "detail": "HTTP 404"
+    }
+  ],
+  "pass": 5,
+  "fail": 0
+}

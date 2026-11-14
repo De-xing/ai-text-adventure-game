@@ -1,0 +1,479 @@
+{
+  "snapshot": "after",
+  "scope": "server.py",
+  "tool": {
+    "pylint": "4.1.3",
+    "radon": "6.0.1"
+  },
+  "metrics": {
+    "bugs": 0,
+    "code_smells": 0,
+    "pylint_score": 10.0,
+    "cyclomatic_average": 4.51,
+    "cyclomatic_max": 17,
+    "duplicate_blocks": 0,
+    "duplicate_rate_percent": 0.0
+  },
+  "pylint": {
+    "total_messages": 0,
+    "bugs": 0,
+    "code_smells": 0,
+    "duplicate_blocks": 0,
+    "by_type": {
+      "E": 0,
+      "F": 0,
+      "W": 0,
+      "C": 0,
+      "R": 0
+    },
+    "messages": []
+  },
+  "radon": {
+    "block_count": 55,
+    "sum_complexity": 248,
+    "average_complexity": 4.51,
+    "max_complexity": 17,
+    "blocks": [
+      {
+        "file": "server.py",
+        "name": "_plan_graph",
+        "type": "function",
+        "complexity": 17,
+        "rank": "C",
+        "lineno": 381
+      },
+      {
+        "file": "server.py",
+        "name": "_validate_reachability",
+        "type": "function",
+        "complexity": 12,
+        "rank": "C",
+        "lineno": 509
+      },
+      {
+        "file": "server.py",
+        "name": "_written_node_issues",
+        "type": "function",
+        "complexity": 12,
+        "rank": "C",
+        "lineno": 586
+      },
+      {
+        "file": "server.py",
+        "name": "normalize_plan_order",
+        "type": "function",
+        "complexity": 11,
+        "rank": "C",
+        "lineno": 419
+      },
+      {
+        "file": "server.py",
+        "name": "_serve_file",
+        "type": "method",
+        "complexity": 11,
+        "rank": "C",
+        "lineno": 753
+      },
+      {
+        "file": "server.py",
+        "name": "load_config",
+        "type": "function",
+        "complexity": 9,
+        "rank": "B",
+        "lineno": 173
+      },
+      {
+        "file": "server.py",
+        "name": "_validate_endings",
+        "type": "function",
+        "complexity": 9,
+        "rank": "B",
+        "lineno": 529
+      },
+      {
+        "file": "server.py",
+        "name": "_request_llm",
+        "type": "function",
+        "complexity": 8,
+        "rank": "B",
+        "lineno": 321
+      },
+      {
+        "file": "server.py",
+        "name": "validate_bible",
+        "type": "function",
+        "complexity": 8,
+        "rank": "B",
+        "lineno": 560
+      },
+      {
+        "file": "server.py",
+        "name": "do_GET",
+        "type": "method",
+        "complexity": 8,
+        "rank": "B",
+        "lineno": 728
+      },
+      {
+        "file": "server.py",
+        "name": "_topological_order",
+        "type": "function",
+        "complexity": 7,
+        "rank": "B",
+        "lineno": 401
+      },
+      {
+        "file": "server.py",
+        "name": "_validate_branching",
+        "type": "function",
+        "complexity": 7,
+        "rank": "B",
+        "lineno": 543
+      },
+      {
+        "file": "server.py",
+        "name": "validate_nodes",
+        "type": "function",
+        "complexity": 7,
+        "rank": "B",
+        "lineno": 608
+      },
+      {
+        "file": "server.py",
+        "name": "do_POST",
+        "type": "method",
+        "complexity": 7,
+        "rank": "B",
+        "lineno": 853
+      },
+      {
+        "file": "server.py",
+        "name": "call_llm",
+        "type": "function",
+        "complexity": 6,
+        "rank": "B",
+        "lineno": 359
+      },
+      {
+        "file": "server.py",
+        "name": "_collect_positions",
+        "type": "function",
+        "complexity": 6,
+        "rank": "B",
+        "lineno": 444
+      },
+      {
+        "file": "server.py",
+        "name": "plan_is_severe",
+        "type": "function",
+        "complexity": 6,
+        "rank": "B",
+        "lineno": 624
+      },
+      {
+        "file": "server.py",
+        "name": "check",
+        "type": "method",
+        "complexity": 6,
+        "rank": "B",
+        "lineno": 215
+      },
+      {
+        "file": "server.py",
+        "name": "extract_json",
+        "type": "function",
+        "complexity": 5,
+        "rank": "A",
+        "lineno": 245
+      },
+      {
+        "file": "server.py",
+        "name": "_choice_issue",
+        "type": "function",
+        "complexity": 5,
+        "rank": "A",
+        "lineno": 462
+      },
+      {
+        "file": "server.py",
+        "name": "_non_ending_issues",
+        "type": "function",
+        "complexity": 5,
+        "rank": "A",
+        "lineno": 474
+      },
+      {
+        "file": "server.py",
+        "name": "_validate_choices_and_endings",
+        "type": "function",
+        "complexity": 5,
+        "rank": "A",
+        "lineno": 499
+      },
+      {
+        "file": "server.py",
+        "name": "_story_context",
+        "type": "method",
+        "complexity": 5,
+        "rank": "A",
+        "lineno": 780
+      },
+      {
+        "file": "server.py",
+        "name": "_missing_field_issues",
+        "type": "function",
+        "complexity": 4,
+        "rank": "A",
+        "lineno": 435
+      },
+      {
+        "file": "server.py",
+        "name": "RateLimiter",
+        "type": "class",
+        "complexity": 4,
+        "rank": "A",
+        "lineno": 205
+      },
+      {
+        "file": "server.py",
+        "name": "Handler",
+        "type": "class",
+        "complexity": 4,
+        "rank": "A",
+        "lineno": 675
+      },
+      {
+        "file": "server.py",
+        "name": "_same_origin",
+        "type": "method",
+        "complexity": 4,
+        "rank": "A",
+        "lineno": 709
+      },
+      {
+        "file": "server.py",
+        "name": "plan_nodes",
+        "type": "function",
+        "complexity": 3,
+        "rank": "A",
+        "lineno": 375
+      },
+      {
+        "file": "server.py",
+        "name": "_ending_issues",
+        "type": "function",
+        "complexity": 3,
+        "rank": "A",
+        "lineno": 488
+      },
+      {
+        "file": "server.py",
+        "name": "_validate_characters",
+        "type": "function",
+        "complexity": 3,
+        "rank": "A",
+        "lineno": 552
+      },
+      {
+        "file": "server.py",
+        "name": "main",
+        "type": "function",
+        "complexity": 3,
+        "rank": "A",
+        "lineno": 881
+      },
+      {
+        "file": "server.py",
+        "name": "_read_json",
+        "type": "method",
+        "complexity": 3,
+        "rank": "A",
+        "lineno": 701
+      },
+      {
+        "file": "server.py",
+        "name": "_client_ip",
+        "type": "method",
+        "complexity": 3,
+        "rank": "A",
+        "lineno": 718
+      },
+      {
+        "file": "server.py",
+        "name": "_handle_repair",
+        "type": "method",
+        "complexity": 3,
+        "rank": "A",
+        "lineno": 835
+      },
+      {
+        "file": "server.py",
+        "name": "ai_slot",
+        "type": "function",
+        "complexity": 2,
+        "rank": "A",
+        "lineno": 280
+      },
+      {
+        "file": "server.py",
+        "name": "_sanitize_error",
+        "type": "function",
+        "complexity": 2,
+        "rank": "A",
+        "lineno": 290
+      },
+      {
+        "file": "server.py",
+        "name": "_llm_endpoint",
+        "type": "function",
+        "complexity": 2,
+        "rank": "A",
+        "lineno": 296
+      },
+      {
+        "file": "server.py",
+        "name": "_llm_payload",
+        "type": "function",
+        "complexity": 2,
+        "rank": "A",
+        "lineno": 304
+      },
+      {
+        "file": "server.py",
+        "name": "safe_text",
+        "type": "function",
+        "complexity": 2,
+        "rank": "A",
+        "lineno": 635
+      },
+      {
+        "file": "server.py",
+        "name": "EchoQuestError",
+        "type": "class",
+        "complexity": 2,
+        "rank": "A",
+        "lineno": 262
+      },
+      {
+        "file": "server.py",
+        "name": "UpstreamError",
+        "type": "class",
+        "complexity": 2,
+        "rank": "A",
+        "lineno": 272
+      },
+      {
+        "file": "server.py",
+        "name": "_handle_write",
+        "type": "method",
+        "complexity": 2,
+        "rank": "A",
+        "lineno": 818
+      },
+      {
+        "file": "server.py",
+        "name": "now_ms",
+        "type": "function",
+        "complexity": 1,
+        "rank": "A",
+        "lineno": 195
+      },
+      {
+        "file": "server.py",
+        "name": "safe_log",
+        "type": "function",
+        "complexity": 1,
+        "rank": "A",
+        "lineno": 200
+      },
+      {
+        "file": "server.py",
+        "name": "build_architect_prompt",
+        "type": "function",
+        "complexity": 1,
+        "rank": "A",
+        "lineno": 640
+      },
+      {
+        "file": "server.py",
+        "name": "build_writer_prompt",
+        "type": "function",
+        "complexity": 1,
+        "rank": "A",
+        "lineno": 653
+      },
+      {
+        "file": "server.py",
+        "name": "build_repair_prompt",
+        "type": "function",
+        "complexity": 1,
+        "rank": "A",
+        "lineno": 663
+      },
+      {
+        "file": "server.py",
+        "name": "__init__",
+        "type": "method",
+        "complexity": 1,
+        "rank": "A",
+        "lineno": 208
+      },
+      {
+        "file": "server.py",
+        "name": "finish_generation",
+        "type": "method",
+        "complexity": 1,
+        "rank": "A",
+        "lineno": 235
+      },
+      {
+        "file": "server.py",
+        "name": "__init__",
+        "type": "method",
+        "complexity": 1,
+        "rank": "A",
+        "lineno": 265
+      },
+      {
+        "file": "server.py",
+        "name": "__init__",
+        "type": "method",
+        "complexity": 1,
+        "rank": "A",
+        "lineno": 275
+      },
+      {
+        "file": "server.py",
+        "name": "log_message",
+        "type": "method",
+        "complexity": 1,
+        "rank": "A",
+        "lineno": 686
+      },
+      {
+        "file": "server.py",
+        "name": "_send_json",
+        "type": "method",
+        "complexity": 1,
+        "rank": "A",
+        "lineno": 690
+      },
+      {
+        "file": "server.py",
+        "name": "_result_meta",
+        "type": "method",
+        "complexity": 1,
+        "rank": "A",
+        "lineno": 793
+      },
+      {
+        "file": "server.py",
+        "name": "_handle_architect",
+        "type": "method",
+        "complexity": 1,
+        "rank": "A",
+        "lineno": 802
+      }
+    ]
+  }
+}
