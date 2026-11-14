@@ -311,6 +311,3 @@ git check-ignore -v .secrets/api.json
 
 ---
 
-## License
-
-暂未指定开源许可证。公开发布前请根据使用场景补充 `LICENSE` 文件。
