@@ -4,7 +4,7 @@
 
 [在线演示](http://120.26.225.51) · [架构设计](docs/software/architecture.md) · [质量报告](qa/quality-report.md) · [部署指南](deploy/README.md)
 
-![EchoQuest 首页](docs/assets/echoquest-home.png)
+![EchoQuest 首页](assets/echoquest-home.png)
 
 EchoQuest 是一个 AI 互动叙事创作原型：用户输入一段背景设定，Agent 会先设计专属的故事流程，再逐节点撰写正文，经过结构校验和条件修复后，编译成可以编辑、游玩、存档和多结局探索的文字游戏。
 
