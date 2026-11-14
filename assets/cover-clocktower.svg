@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" role="img" aria-label="雨夜校园钟楼插画">
+  <defs>
+    <linearGradient id="csky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#081014"/>
+      <stop offset=".48" stop-color="#102529"/>
+      <stop offset="1" stop-color="#1d3335"/>
+    </linearGradient>
+    <radialGradient id="cmoon" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#d7e8df" stop-opacity=".38"/>
+      <stop offset=".4" stop-color="#91b9b4" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#91b9b4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cglow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#f0c77e" stop-opacity=".75"/>
+      <stop offset=".4" stop-color="#d89f57" stop-opacity=".24"/>
+      <stop offset="1" stop-color="#d89f57" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cbuilding" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a1518"/>
+      <stop offset="1" stop-color="#05090b"/>
+    </linearGradient>
+    <linearGradient id="crain" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#bcd7d1" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#bcd7d1" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#bcd7d1" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="cblur"><feGaussianBlur stdDeviation="17"/></filter>
+    <filter id="csoft"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="cgrain">
+      <feTurbulence type="fractalNoise" baseFrequency=".82" numOctaves="3" stitchTiles="stitch"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".15"/></feComponentTransfer>
+    </filter>
+  </defs>
+
+  <rect width="900" height="1200" fill="url(#csky)"/>
+  <circle cx="245" cy="240" r="280" fill="url(#cmoon)"/>
+  <circle cx="245" cy="240" r="86" fill="#cbded7" opacity=".22"/>
+  <path d="M0 352c85-24 148-4 218 11 96 21 164-18 250-9 108 12 182 41 282 17 52-13 103-17 150-4v70c-69-9-126 18-208 17-103-1-179-29-272-18-103 13-180 37-284 14-55-12-96-8-136 7Z" fill="#16282b" opacity=".38"/>
+
+  <g fill="#d6e9e3" opacity=".45">
+    <circle cx="520" cy="143" r="1.3"/><circle cx="686" cy="211" r="1.7"/><circle cx="774" cy="130" r="1.1"/>
+    <circle cx="413" cy="287" r="1"/><circle cx="808" cy="378" r="1.4"/><circle cx="118" cy="430" r="1.2"/>
+  </g>
+
+  <g opacity=".62">
+    <ellipse cx="620" cy="355" rx="260" ry="10" fill="#9bb8b3" filter="url(#cblur)"/>
+    <ellipse cx="315" cy="477" rx="220" ry="8" fill="#8fa9a4" filter="url(#cblur)"/>
+  </g>
+
+  <g fill="url(#cbuilding)">
+    <path d="M0 853h65V715h115v-57h165v111h234V682h97v171h94V744h130v109h900v347H0Z"/>
+    <path d="M0 947h900v253H0Z"/>
+  </g>
+
+  <!-- clock tower -->
+  <g transform="translate(375 295)">
+    <path d="M70 0h80l15 59H55Z" fill="#081215"/>
+    <path d="M58 56h104l8 40H50Z" fill="#0b1a1d"/>
+    <rect x="42" y="94" width="136" height="460" fill="#081316"/>
+    <rect x="42" y="94" width="136" height="16" fill="#182f31"/>
+    <rect x="74" y="142" width="72" height="98" fill="#071012"/>
+    <rect x="82" y="150" width="56" height="82" fill="#1b2b2c"/>
+    <circle cx="110" cy="191" r="46" fill="#f2d394" opacity=".16" filter="url(#cglow)"/>
+    <circle cx="110" cy="191" r="31" fill="#e9ce97" opacity=".86"/>
+    <circle cx="110" cy="191" r="26" fill="#182528"/>
+    <circle cx="110" cy="191" r="2.5" fill="#e9ce97"/>
+    <path d="M110 191V170M110 191l15 9" stroke="#e9ce97" stroke-width="2" stroke-linecap="round"/>
+    <g stroke="#e9ce97" stroke-width="1.4" opacity=".8">
+      <path d="M110 163v5M110 214v5M82 191h5M133 191h5"/>
+    </g>
+    <rect x="42" y="260" width="136" height="25" fill="#0d1c1f"/>
+    <path d="M58 285h104l-10 23H68Z" fill="#071012"/>
+    <g fill="#132629">
+      <rect x="64" y="333" width="23" height="51"/><rect x="98" y="333" width="23" height="51"/><rect x="132" y="333" width="23" height="51"/>
+      <rect x="64" y="414" width="23" height="51"/><rect x="132" y="414" width="23" height="51"/>
+    </g>
+    <rect x="96" y="410" width="28" height="72" fill="#061012"/>
+    <rect x="98" y="520" width="25" height="34" fill="#e6bd78" opacity=".58"/>
+    <rect x="60" y="554" width="100" height="280" fill="#071114"/>
+    <g fill="#dfb36c" opacity=".55">
+      <rect x="72" y="580" width="17" height="23"/><rect x="99" y="580" width="17" height="23"/><rect x="126" y="580" width="17" height="23"/>
+      <rect x="72" y="631" width="17" height="23"/><rect x="126" y="631" width="17" height="23"/>
+    </g>
+    <path d="M92 123h36v21H92Z" fill="#0a1417"/>
+  </g>
+
+  <!-- school building windows -->
+  <g fill="#d8b16e" opacity=".66">
+    <rect x="35" y="757" width="25" height="38" rx="1"/><rect x="80" y="757" width="25" height="38" rx="1"/>
+    <rect x="219" y="690" width="26" height="47" rx="1"/><rect x="266" y="690" width="26" height="47" rx="1"/><rect x="313" y="690" width="26" height="47" rx="1"/>
+    <rect x="600" y="735" width="25" height="45" rx="1"/><rect x="646" y="735" width="25" height="45" rx="1"/>
+    <rect x="768" y="790" width="22" height="35" rx="1"/><rect x="810" y="790" width="22" height="35" rx="1"/>
+  </g>
+  <g fill="#9fc4bd" opacity=".16">
+    <rect x="35" y="757" width="25" height="38" rx="1"/><rect x="219" y="690" width="26" height="47" rx="1"/>
+    <rect x="600" y="735" width="25" height="45" rx="1"/><rect x="768" y="790" width="22" height="35" rx="1"/>
+  </g>
+
+  <g stroke="#071012" stroke-width="8" stroke-linecap="round">
+    <path d="M78 947V610m0 153-64-97m64 179 66-115"/>
+    <path d="M833 947V665m0 139 59-84m-59 165-63-89"/>
+  </g>
+  <g fill="#071012">
+    <path d="M42 690 78 590l36 100-36-31Z"/><path d="M798 663 833 566l35 97-35-32Z"/>
+  </g>
+
+  <!-- wet ground and reflections -->
+  <path d="M0 910h900v290H0Z" fill="url(#cbuilding)" opacity=".82"/>
+  <g opacity=".23" fill="#d9bc80" filter="url(#cblur)">
+    <ellipse cx="108" cy="1008" rx="31" ry="71"/>
+    <ellipse cx="451" cy="989" rx="52" ry="94"/>
+    <ellipse cx="742" cy="1022" rx="36" ry="70"/>
+  </g>
+  <g stroke="#aecbc5" stroke-opacity=".15">
+    <path d="M0 1040h900M0 1125h900M0 1180h900"/>
+  </g>
+
+  <!-- umbrella figure -->
+  <g transform="translate(715 930)" opacity=".9">
+    <path d="M-43 7c3-33 21-51 43-51s40 18 43 51Z" fill="#0a1417" stroke="#38504f" stroke-width="1.2"/>
+    <path d="M0-44v64" stroke="#6b6252" stroke-width="1.6"/>
+    <path d="M0 20c0 16 10 22 18 13" stroke="#6b6252" stroke-width="1.6" fill="none"/>
+    <path d="M-8 18h16l5 70H-13Z" fill="#0b1417"/>
+  </g>
+
+  <!-- rain -->
+  <g stroke="url(#crain)" stroke-width="1.2">
+    <path d="m52 140-24 206M141 84l-30 250M238 137l-22 181M742 86l-28 232M840 136l-19 158M665 248l-14 138M365 71l-27 214M459 161l-22 185M549 58l-31 263"/>
+    <path d="m94 582-21 171M211 541l-19 152M778 502l-22 178M860 611l-16 129M313 575l-20 169"/>
+  </g>
+
+  <rect width="900" height="1200" filter="url(#cgrain)" opacity=".8"/>
+  <rect x="2" y="2" width="896" height="1196" fill="none" stroke="#e4d3ac" stroke-opacity=".08" stroke-width="2"/>
+</svg>

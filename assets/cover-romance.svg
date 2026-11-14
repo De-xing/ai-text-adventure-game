@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" role="img" aria-label="黄昏车站插画">
+  <defs>
+    <linearGradient id="rsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a1b2b"/>
+      <stop offset=".5" stop-color="#5a3c4c"/>
+      <stop offset=".78" stop-color="#b77d72"/>
+      <stop offset="1" stop-color="#212027"/>
+    </linearGradient>
+    <radialGradient id="rsun" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#ffd8c4" stop-opacity=".85"/>
+      <stop offset=".4" stop-color="#ffb9a2" stop-opacity=".3"/>
+      <stop offset="1" stop-color="#ffb9a2" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="platform" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#211f24"/>
+      <stop offset="1" stop-color="#0c0c0e"/>
+    </linearGradient>
+    <filter id="rblur"><feGaussianBlur stdDeviation="12"/></filter>
+    <filter id="rgrain">
+      <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".13"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="900" height="1200" fill="url(#rsky)"/>
+  <circle cx="673" cy="385" r="310" fill="url(#rsun)"/>
+  <circle cx="673" cy="385" r="72" fill="#f7cdbc" opacity=".62"/>
+  <g fill="#1b1a20" opacity=".9">
+    <path d="M0 665 137 557l102 42 124-137 78 145 111-85 142 131 106-44 100 66v150H0Z"/>
+  </g>
+  <g fill="#141318">
+    <path d="M0 696h900v161H0Z"/>
+    <path d="M0 719h66v18H0Zm834 0h66v18h-66Z"/>
+  </g>
+  <g stroke="#0c0c10" stroke-width="8">
+    <path d="M64 710v327M836 710v327M184 710v280M716 710v280"/>
+  </g>
+  <path d="M54 741h792l-37 62H91Z" fill="#121116"/>
+  <path d="M0 865h900v335H0Z" fill="url(#platform)"/>
+  <g stroke="#b99e91" stroke-opacity=".22">
+    <path d="M0 912h900M0 1004h900M0 1122h900"/>
+    <path d="M151 865 42 1200M329 865 253 1200M585 865l54 335M783 865l83 335"/>
+  </g>
+  <g fill="#e7b9aa" opacity=".65">
+    <path d="M184 439c8-11 21-11 29 0-9 7-20 7-29 0Z"/><path d="M241 459c6-8 15-8 21 0-7 5-15 5-21 0Z"/>
+    <path d="M543 309c7-9 17-9 24 0-8 6-17 6-24 0Z"/><path d="M735 503c5-7 12-7 17 0-6 4-12 4-17 0Z"/>
+  </g>
+  <g opacity=".45">
+    <ellipse cx="240" cy="784" rx="290" ry="20" fill="#bd9489" filter="url(#rblur)"/>
+    <ellipse cx="670" cy="818" rx="260" ry="15" fill="#b98d81" filter="url(#rblur)"/>
+  </g>
+  <g fill="#f6d9cc" opacity=".55">
+    <circle cx="112" cy="1076" r="2"/><circle cx="348" cy="1152" r="1.4"/><circle cx="690" cy="1064" r="1.8"/><circle cx="796" cy="980" r="1.2"/>
+  </g>
+  <rect width="900" height="1200" filter="url(#rgrain)" opacity=".8"/>
+  <rect x="2" y="2" width="896" height="1196" fill="none" stroke="#f1cab9" stroke-opacity=".08" stroke-width="2"/>
+</svg>

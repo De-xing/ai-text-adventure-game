@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" role="img" aria-label="雾港灯塔插画">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b161b"/>
+      <stop offset=".5" stop-color="#14292d"/>
+      <stop offset="1" stop-color="#263e3d"/>
+    </linearGradient>
+    <radialGradient id="moon" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#f2e3bf" stop-opacity=".95"/>
+      <stop offset=".45" stop-color="#e8ce96" stop-opacity=".46"/>
+      <stop offset="1" stop-color="#e8ce96" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lamp" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f1c785" stop-opacity="0"/>
+      <stop offset=".55" stop-color="#f3d396" stop-opacity=".26"/>
+      <stop offset="1" stop-color="#f3d396" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#243c3e"/>
+      <stop offset="1" stop-color="#080f13"/>
+    </linearGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="18"/></filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".16"/></feComponentTransfer>
+    </filter>
+  </defs>
+
+  <rect width="900" height="1200" fill="url(#sky)"/>
+  <circle cx="240" cy="255" r="242" fill="url(#moon)"/>
+  <circle cx="240" cy="255" r="86" fill="#e9d8ae" opacity=".72"/>
+  <circle cx="208" cy="230" r="13" fill="#c8b98f" opacity=".2"/>
+  <circle cx="272" cy="282" r="20" fill="#c8b98f" opacity=".16"/>
+  <circle cx="270" cy="215" r="7" fill="#c8b98f" opacity=".2"/>
+
+  <g fill="#d9e4de" opacity=".45">
+    <circle cx="510" cy="154" r="1.6"/><circle cx="602" cy="228" r="1.1"/><circle cx="716" cy="142" r="1.4"/>
+    <circle cx="442" cy="312" r="1"/><circle cx="780" cy="322" r="1.8"/><circle cx="110" cy="469" r="1.2"/>
+    <circle cx="346" cy="404" r="1.3"/><circle cx="648" cy="401" r="1"/>
+  </g>
+
+  <path d="M0 706c126-21 204 2 315-16 127-20 211-1 299-17 102-19 192 13 286-8v147H0Z" fill="#132629"/>
+  <path d="M642 618h94v-91l-47-36-47 36Z" fill="#111d20"/>
+  <path d="M672 618V546h34v72Z" fill="#0c1518"/>
+  <rect x="730" y="610" width="66" height="16" fill="#101b1e"/>
+  <path d="M0 748c110 4 164-30 278-18 140 15 200-22 342 5 102 20 178-16 280-4v469H0Z" fill="url(#sea)"/>
+
+  <g opacity=".26" stroke="#b7c8c1" stroke-width="1.2">
+    <path d="M54 876h250"/><path d="M170 918h216"/><path d="M452 883h173"/><path d="M646 947h210"/>
+    <path d="M84 1012h133"/><path d="M332 1058h294"/><path d="M701 1041h142"/>
+  </g>
+
+  <g transform="translate(585 408)">
+    <path d="M73 0 54 43l8 318h79l8-318L130 0Z" fill="#0b1214"/>
+    <path d="M59 49h85l-5 42H63Z" fill="#101b1e"/>
+    <path d="M42 26h120v27H42Z" fill="#0a1113"/>
+    <path d="M53 13h98v13H53Z" fill="#0a1113"/>
+    <rect x="45" y="31" width="114" height="9" fill="#1b2a2c"/>
+    <g opacity=".9">
+      <path d="M70 20h64v9H70Z" fill="#f1d394" opacity=".8"/>
+      <circle cx="102" cy="24" r="30" fill="#f2d79e" opacity=".13" filter="url(#soft)"/>
+    </g>
+    <path d="M-260 19h302L102 3 442 19 102 35Z" fill="url(#lamp)"/>
+    <path d="M70 70h66l4 38H66Z" fill="#c9b47d" opacity=".3"/>
+    <path d="M30 363h150l-16 24H44Z" fill="#080e11"/>
+  </g>
+
+  <g fill="#0a1114">
+    <path d="M0 930c44-34 92-37 143-8 25 14 55 12 89-8 43-26 85-17 118 9v66H0Z"/>
+    <path d="M770 902c33-24 77-20 130 16v41H754Z"/>
+    <path d="M0 1090c127-32 211-8 309-26 116-22 203 10 315 1 106-9 176-20 276 0v135H0Z"/>
+  </g>
+
+  <g opacity=".4" fill="#7c9b98">
+    <ellipse cx="220" cy="783" rx="290" ry="27" filter="url(#blur)"/>
+    <ellipse cx="700" cy="845" rx="260" ry="20" filter="url(#blur)"/>
+    <ellipse cx="360" cy="976" rx="350" ry="24" filter="url(#blur)"/>
+    <ellipse cx="715" cy="1080" rx="300" ry="22" filter="url(#blur)"/>
+  </g>
+
+  <rect width="900" height="1200" filter="url(#grain)" opacity=".6"/>
+  <rect width="900" height="1200" fill="none" stroke="#e5d3aa" stroke-opacity=".08" stroke-width="2"/>
+</svg>

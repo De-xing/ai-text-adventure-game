@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" role="img" aria-label="末世余晖插画">
+  <defs>
+    <linearGradient id="asky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#201211"/>
+      <stop offset=".45" stop-color="#6a3322"/>
+      <stop offset=".7" stop-color="#b5673c"/>
+      <stop offset="1" stop-color="#1b1410"/>
+    </linearGradient>
+    <radialGradient id="asun" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#ffd6a0" stop-opacity=".9"/>
+      <stop offset=".3" stop-color="#f79c5d" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#f79c5d" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="aground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2d2118"/>
+      <stop offset="1" stop-color="#0b0b09"/>
+    </linearGradient>
+    <filter id="ablur"><feGaussianBlur stdDeviation="18"/></filter>
+    <filter id="agrain">
+      <feTurbulence type="fractalNoise" baseFrequency=".75" numOctaves="3" stitchTiles="stitch"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".18"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="900" height="1200" fill="url(#asky)"/>
+  <circle cx="526" cy="461" r="380" fill="url(#asun)"/>
+  <circle cx="526" cy="461" r="116" fill="#ffd2a2" opacity=".62"/>
+  <g opacity=".4" fill="#f6c69d">
+    <ellipse cx="210" cy="366" rx="200" ry="12" filter="url(#ablur)"/>
+    <ellipse cx="710" cy="568" rx="210" ry="14" filter="url(#ablur)"/>
+    <ellipse cx="390" cy="238" rx="260" ry="8" filter="url(#ablur)"/>
+  </g>
+  <g fill="#16120e">
+    <path d="M0 794h141l24-92h45l17 92h79l39-150h32l18 150h115l74-240h44l29 240h98l22-76h66v360H0Z"/>
+  </g>
+  <g fill="#0e0d0b">
+    <path d="M0 907c131-33 207 6 302-22 109-32 212 12 322-7 96-16 187 5 276-18v340H0Z"/>
+  </g>
+  <path d="M0 969c146-30 230-1 347-27 126-28 208 15 317-1 88-13 156-3 236 15" fill="none" stroke="#1d1711" stroke-width="20"/>
+  <g fill="#13100c">
+    <path d="M153 975V779h35v196Z"/><path d="M116 814h107l-17 39H135Z"/><path d="M600 972V829h29v143Z"/><path d="M575 856h82l-12 28h-58Z"/>
+    <path d="M745 970V747h20v223Z"/><path d="M684 786h143l-17 32H702Z"/>
+  </g>
+  <g stroke="#8d684a" stroke-width="1.4" opacity=".55">
+    <path d="M44 1088h304M154 1141h450M620 1067h222M330 1183h500"/>
+  </g>
+  <g fill="#e8c198" opacity=".6">
+    <circle cx="165" cy="1060" r="1.7"/><circle cx="370" cy="1120" r="1.2"/><circle cx="699" cy="1096" r="1.5"/>
+  </g>
+  <g fill="none" stroke="#1b1610" stroke-width="3" opacity=".8">
+    <path d="M180 305c23-13 42-13 59 1-17 12-41 12-59-1Zm62-24c16-9 28-8 39 2-12 7-27 6-39-2Z"/>
+  </g>
+  <rect width="900" height="1200" filter="url(#agrain)" opacity=".85"/>
+  <rect x="2" y="2" width="896" height="1196" fill="none" stroke="#f0bb8c" stroke-opacity=".08" stroke-width="2"/>
+</svg>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" role="img" aria-label="暮色森林插画">
+  <defs>
+    <linearGradient id="fsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#11190f"/>
+      <stop offset=".5" stop-color="#3c3f21"/>
+      <stop offset="1" stop-color="#17170d"/>
+    </linearGradient>
+    <radialGradient id="fsun" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#f9d795" stop-opacity=".9"/>
+      <stop offset=".4" stop-color="#e7ad62" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#e7ad62" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c2b67f" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#c2b67f" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#c2b67f" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="fblur"><feGaussianBlur stdDeviation="15"/></filter>
+    <filter id="fgrain">
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".15"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="900" height="1200" fill="url(#fsky)"/>
+  <circle cx="595" cy="323" r="330" fill="url(#fsun)"/>
+  <circle cx="595" cy="323" r="92" fill="#f0d39a" opacity=".76"/>
+  <g fill="#171b12">
+    <path d="M0 0h900v228c-92 15-129 55-206 50-95-7-139 34-250 33C303 310 212 280 138 298 82 311 40 288 0 300Z"/>
+  </g>
+  <g fill="#14180f">
+    <path d="M0 833c84-49 137-32 185-96 34-46 60-28 84-6 21 19 42 5 68-44 21-40 49-46 69 3 22 56 51 63 82 14 33-51 62-54 89-3 29 55 67 45 93 6 28-43 55-42 87 5 42 62 84 82 143 92v216H0Z"/>
+    <path d="M0 975c97-39 141-15 206-48 46-23 91-21 119 18 31 43 74 35 113-8 36-40 74-43 108 5 35 51 72 48 109-4 40-57 82-52 111-2 28 49 70 51 134 30v234H0Z"/>
+  </g>
+  <g stroke="#0d100a" stroke-width="8" stroke-linecap="round">
+    <path d="M89 1200V717m0 140-72-104m72 196 72-124M807 1200V659m0 195 83-132m-83 267-76-123"/>
+  </g>
+  <g fill="#10130d" opacity=".9">
+    <path d="M54 785 89 701l34 84-34-28Z"/><path d="M774 734 807 636l34 98-34-31Z"/>
+  </g>
+  <g fill="#efc07c" opacity=".75">
+    <circle cx="312" cy="540" r="2.5"/><circle cx="351" cy="602" r="1.3"/><circle cx="692" cy="525" r="2"/>
+    <circle cx="729" cy="586" r="1.3"/><circle cx="215" cy="665" r="1.5"/><circle cx="626" cy="684" r="1"/>
+  </g>
+  <g opacity=".55" fill="url(#fog)">
+    <ellipse cx="385" cy="800" rx="430" ry="90"/>
+    <ellipse cx="680" cy="977" rx="420" ry="71"/>
+  </g>
+  <rect width="900" height="1200" filter="url(#fgrain)" opacity=".8"/>
+  <rect x="2" y="2" width="896" height="1196" fill="none" stroke="#f0da9f" stroke-opacity=".07" stroke-width="2"/>
+</svg>
