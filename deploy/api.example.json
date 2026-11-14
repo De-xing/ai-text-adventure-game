@@ -1,0 +1,6 @@
+{
+  "provider": "openai-compatible",
+  "baseUrl": "https://你的接口地址/v1",
+  "model": "你的模型名",
+  "apiKey": "在这里填入 API Key"
+}

@@ -1,0 +1,27 @@
+[Unit]
+Description=EchoQuest AI Agent proxy and static server
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/echoquest
+ExecStart=/usr/bin/python3 /opt/echoquest/server.py
+Environment=ECHOQUEST_HOST=127.0.0.1
+Environment=ECHOQUEST_PORT=8000
+Environment=ECHOQUEST_RATE_LIMIT=8
+Environment=ECHOQUEST_DAILY_LIMIT=300
+Environment=PYTHONDONTWRITEBYTECODE=1
+Restart=always
+RestartSec=3
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/opt/echoquest
+RestrictSUIDSGID=true
+
+[Install]
+WantedBy=multi-user.target
