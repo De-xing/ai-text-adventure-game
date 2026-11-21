@@ -35,6 +35,9 @@ th, td { padding: 0.3em 0.55em !important; }
 .card { border: 1px solid #e2e8f0; border-left: 3px solid #6366f1; border-radius: 6px; padding: 7px 9px; font-size: 0.6em; line-height: 1.35; background: #fff; }
 .card b { color: #1e293b; }
 .ph { border: 1px dashed #cbd5e1; border-radius: 8px; padding: 12px; text-align: center; color: #94a3b8; font-size: 0.58em; background: #fafafa; }
+.shot { margin: 0; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; background: #fff; }
+.shot img { display: block; width: 100%; height: 170px; object-fit: contain; object-position: top; background: #fff; }
+.shot figcaption { font-size: 0.5em; line-height: 1.35; color: #64748b; padding: 4px 7px; border-top: 1px solid #eef2f6; }
 .cover { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 21rem; }
 .cover h1 { font-size: 3.1em; margin: 0.15em 0 0.1em; font-weight: 700; }
 .slidev-layout code { font-size: 0.92em; }
@@ -395,13 +398,13 @@ layout: section
 ## 3.3 代码仓库与协作
 
 <div class="grid2">
-<div class="card"><b>仓库</b><br/><code>github.com/De-xing/ai-text-adventure-game</code><br/><span class="tiny muted">MIT License · JavaScript + Python</span></div>
+<div class="card"><b>仓库</b><br/><code>github.com/De-xing/ai-text-adventure-game</code><br/><span class="tiny muted">JavaScript + Python · 许可证待补充</span></div>
 <div class="card"><b>提交规范</b><br/>Conventional Commits：<code>feat:</code> / <code>fix:</code> / <code>docs:</code> / <code>refactor:</code><br/><span class="tiny muted">每条提交对应一个可验收改动</span></div>
 </div>
 
 <div class="grid2 mt-3">
-<div class="ph" style="height:96px">截图占位：仓库 Pulse 页<br/><span class="tiny">github.com/De-xing/ai-text-adventure-game/pulse</span></div>
-<div class="ph" style="height:96px">截图占位：GitHub Projects 看板 / Issues<br/><span class="tiny">5 个 open issues 即公开缺陷池</span></div>
+<div class="card"><b>提交历史</b><br/><a href="https://github.com/De-xing/ai-text-adventure-game/pulse">github.com/De-xing/ai-text-adventure-game/pulse</a><br/><span class="tiny muted">现场打开仓库查看，不使用外网截图</span></div>
+<div class="card"><b>协作与 CI</b><br/>GitHub Actions 跑 22 个 unittest<br/><span class="tiny muted">Issues 作为公开缺陷池；质量报告见 3.6</span></div>
 </div>
 
 <div class="mt-3 tiny">
@@ -1133,17 +1136,19 @@ Code Smells：<b>46 → 0</b><br/>
 </span></div>
 </div>
 
-<div class="grid mt-3">
-<div class="ph" style="height:120px">
-![质量报告截图](qa/screenshots/quality-report.png)
-</div>
-<div class="ph" style="height:120px">
-对比报告截图
-</div>
+<div class="grid2 mt-3">
+<figure class="shot">
+  <img src="./images/quality-report.png" alt="EchoQuest 代码质量报告" style="object-fit:cover;object-position:top" />
+  <figcaption>质量报告总览：Pylint 8.98 → 10.00，Code Smell 46 → 0</figcaption>
+</figure>
+<figure class="shot">
+  <img src="./images/scan-compare.png" alt="重构前后 Pylint 扫描对比" />
+  <figcaption>左：重构前 8.98 / 46 smells；右：重构后 10.00 / 0</figcaption>
+</figure>
 </div>
 
 <div class="tiny muted mt-2">
-这些报告与扫描脚本都在仓库 <code>qa/</code> 目录，可现场复跑：<code>python qa/run_scan.py after</code>。
+报告与扫描脚本在仓库 <code>qa/</code> 目录，可现场复跑：<code>python qa/run_scan.py after</code>。
 </div>
 
 ---
@@ -1151,19 +1156,19 @@ Code Smells：<b>46 → 0</b><br/>
 ## 3.7 代码统计
 
 <div class="grid2">
-<div class="ph" style="height:120px">截图占位：VS Code Counter / Statistic 插件导出的<br/>文件数、模块数、各语言行数</div>
-<div class="card"><b>规模（按仓库现状）</b><br/>
+<div class="card"><b>规模（按当前仓库实测）</b><br/>
 <span class="tiny">
-后端：<code>server.py</code> 单文件约 37 KB<br/>
-前端：<code>app.js</code> 约 180 KB、<code>styles.css</code> 约 114 KB、<code>agent.js</code> 约 19 KB、<code>story-generator.js</code> 约 49 KB<br/>
-文档：架构 39 KB、数据字典 39 KB、测试用例 50 KB<br/>
-数据库：<code>schema.sql</code> 34 KB（31 表 + 4 视图）
+后端：<code>server.py</code> 899 行 / 36.9 KB<br/>
+前端：<code>app.js</code> 3,108 行 / 152 KB；<code>styles.css</code> 116 KB；<code>agent.js</code> 410 行 / 19 KB；<code>story-generator.js</code> 49 KB<br/>
+测试：2 个测试文件 / 22 个用例<br/>
+数据：当前无服务端数据库；作品在 localStorage
 </span></div>
+<div class="card"><b>模块数</b><br/><span class="tiny">前端 5 个 JS 模块 + 1 个样式表；后端 1 个服务模块；测试 2 个目录（unit / integration）；数据库 schema 属于演进设计，未随当前仓库提交</span></div>
 </div>
 
 <div class="grid2 mt-3">
-<div class="card"><b>模块数</b><br/><span class="tiny">前端 5 个 JS 模块 + 1 个样式表；后端 1 个服务模块；数据层 4 个 SQL/脚本；测试 4 个目录</span></div>
-<div class="card"><b>AI 辅助 vs 手写比例</b><br/><span class="tiny">骨架与重复性代码由 AI 辅助生成；<b>校验器、状态机、Schema、数据模型、提示词策略</b>由团队成员设计与手写<br/><span class="muted">比例待用 Counter 统计后填入，不估算</span></span></div>
+<div class="card"><b>文档与交付物</b><br/><span class="tiny">架构文档 39 KB；测试用例 50 KB；质量报告 8 KB；部署指南 20 KB</span></div>
+<div class="card"><b>AI 辅助 vs 手写比例</b><br/><span class="tiny">骨架与重复性代码由 AI 辅助生成；<b>校验器、状态机、Schema、提示词策略</b>由团队成员设计与手写<br/><span class="muted">精确比例待统计，不估算</span></span></div>
 </div>
 
 ---
@@ -1330,7 +1335,7 @@ layout: section
 </div>
 
 <div class="tiny muted mt-4">
-幻灯片里的「截图占位」共 3 处：仓库 Pulse、质量报告、代码统计。把对应截图放进 <code>docs/slides/images/</code> 后按注释替换即可。
+幻灯片中的质量报告与扫描对比已接入 <code>./images/</code>；仓库页改为可点击链接，不再依赖外网截图，断网也不会出现空白占位。
 </div>
 
 <!--
