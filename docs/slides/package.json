@@ -1,0 +1,16 @@
+{
+  "name": "echoquest-defense-slides",
+  "private": true,
+  "type": "module",
+  "description": "EchoQuest 回响 · 创新工程实践营项目答辩幻灯片（Slidev）",
+  "scripts": {
+    "dev": "slidev slides.md --open",
+    "build": "slidev build slides.md",
+    "export-pdf": "slidev export slides.md --format pdf",
+    "export-png": "slidev export slides.md --format png"
+  },
+  "devDependencies": {
+    "@slidev/cli": "latest",
+    "@slidev/theme-default": "latest"
+  }
+}
