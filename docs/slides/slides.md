@@ -1133,9 +1133,13 @@ Code Smells：<b>46 → 0</b><br/>
 </span></div>
 </div>
 
-<div class="grid2 mt-3">
-<div class="ph" style="height:92px">截图占位：<code>qa/screenshots/quality-report.png</code></div>
-<div class="ph" style="height:92px">截图占位：<code>qa/scan-before.html</code> / <code>scan-after.html</code> 对比</div>
+<div class="grid mt-3">
+<div class="ph" style="height:120px">
+![质量报告截图](qa/screenshots/quality-report.png)
+</div>
+<div class="ph" style="height:120px">
+对比报告截图
+</div>
 </div>
 
 <div class="tiny muted mt-2">
