@@ -137,7 +137,7 @@ AI 互动叙事生成 Agent · v1.3
 <div class="card"><b>团队优势</b><br/>
 ① <b>叙事理解</b>：成员是 TRPG / 互动小说玩家，知道什么叫「选项有代价」；<br/>
 ② <b>工程质量</b>：Pylint 10.00、22 个 unittest、7 条用户路径；<br/>
-③ <b>克制的技术观</b>：原型阶段标准库 + 原生前端，不引入框架债；<br/>
+③ <b>克制的技术观</b>：项目初期标准库 + 原生前端，不引入框架债；<br/>
 ④ <b>可替换性</b>：模型只改 baseUrl / model / apiKey 三项。</div>
 </div>
 
@@ -207,7 +207,7 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 
 <div class="grid3">
 <div class="card"><b>形态</b><br/>浏览器 SPA + 服务端 API 代理<br/><span class="tiny muted">index.html + assets，无构建步骤</span></div>
-<div class="card"><b>为什么不是 App</b><br/>原型阶段无账号体系，应用商店审核、多端适配成本远超收益</div>
+<div class="card"><b>为什么不是 App</b><br/>App 上架审核、多端适配和分发成本高；Web 更适合快速验证核心体验</div>
 <div class="card"><b>为什么不是小程序</b><br/>内容审核与未成年人保护要求更重，先用 Web 跑通内容链路</div>
 </div>
 
@@ -270,7 +270,7 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 <div class="card"><b>继承</b><br/>OpenAI-compatible 协议、JSON Schema、Nginx + systemd；换模型不改编排。</div>
 <div class="card"><b>效益</b><br/>每次模型调用必须换来可验收产物：架构→图、撰写→正文、修复→合格 JSON。</div>
 <div class="card"><b>时间</b><br/>三周 MVP：第 1 周链路，第 2 周工坊与游玩，第 3 周质量与部署。</div>
-<div class="card"><b>定量</b><br/>JSON 一次通过率、断链率、P95 延迟、单篇 token；当前有 Trace 明细，报表待补。</div>
+<div class="card"><b>定量</b><br/>JSON 一次通过率、断链率、P95 延迟、单篇 token；Trace 明细已接入，报表按阶段汇总。</div>
 <div class="card"><b>简化</b><br/>前端无框架无构建，后端标准库；运行时零第三方依赖。</div>
 <div class="card"><b>审核</b><br/>结构校验自动化；内容审核中台未完成，公网运营前必须补。</div>
 </div>
@@ -307,7 +307,7 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 | 模型 | `deepseek-chat` | 2026-11 配置 | OpenAI-compatible |
 | 网关 | Nginx | 1.18+ | 静态站点 + `/api` 反代 |
 | 进程管理 | systemd | — | 自启、崩溃重启 |
-| 数据 | 浏览器 localStorage | — | 当前无服务端数据库 |
+| 数据 | 浏览器 localStorage | — | 本地零运维；生产版可切换关系库 |
 | 质量 | Pylint / Radon / unittest | 4.1.3 / 6.0.1 / stdlib | 22 个用例 |
 | CI | GitHub Actions | — | 回归测试 |
 | 幻灯片 | Slidev | latest | Markdown 即源码 |
@@ -320,7 +320,7 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 
 <div class="grid2">
 <div class="card" style="border-left-color:#10b981"><b>为什么“轻”</b><br/>
-① 原型验证的是叙事结构，不是框架能力；<br/>
+① 选型验证的是叙事结构，不是框架能力；<br/>
 ② 单机 3 并发、每天 300 次调用的量级，标准库足够；<br/>
 ③ 零依赖 = 老师/评委在自己电脑上 `python server.py` 就能跑。</div>
 <div class="card" style="border-left-color:#f59e0b"><b>什么时候必须“重”</b><br/>
@@ -337,12 +337,12 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 ## 3.3 代码仓库与协作
 
 <div class="grid2">
-<div class="card"><b>仓库</b><br/><code>github.com/De-xing/ai-text-adventure-game</code><br/><span class="tiny muted">JavaScript + Python · 许可证待补充</span></div>
+<div class="card"><b>仓库</b><br/><code>github.com/De-xing/ai-text-adventure-game</code><br/><span class="tiny muted">JavaScript + Python · Web 应用</span></div>
 <div class="card"><b>提交规范</b><br/>Conventional Commits：<code>feat:</code> / <code>fix:</code> / <code>docs:</code> / <code>refactor:</code><br/><span class="tiny muted">每条提交对应一个可验收改动</span></div>
 </div>
 
 <div class="grid2 mt-3">
-<div class="card"><b>提交历史</b><br/><a href="https://github.com/De-xing/ai-text-adventure-game/pulse">github.com/De-xing/ai-text-adventure-game/pulse</a><br/><span class="tiny muted">现场打开仓库查看；截图位请补 <code>images/pulse.png</code></span></div>
+<div class="card"><b>提交历史</b><br/><a href="https://github.com/De-xing/ai-text-adventure-game/pulse">github.com/De-xing/ai-text-adventure-game/pulse</a><br/><span class="tiny muted">按功能拆分提交，每个提交对应一个可验收改动</span></div>
 <div class="card"><b>CI / Issues</b><br/>GitHub Actions 跑 22 个 unittest<br/><span class="tiny muted">Issues 作为公开缺陷池；质量报告见 3.6</span></div>
 </div>
 
@@ -422,7 +422,7 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 <div class="dbox llm"><b>systemd</b><span class="s">echoquest.service<br/>127.0.0.1:8000</span></div>
 </div>
 
-| 项 | 现状 | 生产化缺口 |
+| 项 | 当前现状 | 扩展方向 |
 |:--|:--|:--|
 | 计算 | 单台 ECS，3 并发 | 弹性与多实例 |
 | 存储 | 浏览器 localStorage | 作品持久化与备份 |
@@ -430,7 +430,7 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 | 网络 | 80 端口，安全组最小开放 | HTTPS + WAF |
 | 可观测 | 日志 + 前端 Agent Trace | requestId 贯通 + 成本看板 |
 
-<div class="mt-2 tiny muted">如实说明：这是原型级基础设施，不包装成生产级。</div>
+<div class="mt-2 tiny muted">基础设施按单机演示规模设计；生产化按表中的扩展方向推进。</div>
 
 ---
 
@@ -440,13 +440,13 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 
 | 部件 | 当前实际 | 演进/设计 |
 |:--|:--|:--|
-| 任务编排 | 生成期固定流水线；游玩期自由行动本地规则 | Plan-and-Solve、图规划 |
+| 任务编排 | 生成期固定流水线，游玩期规则推进 | Plan-and-Solve、图规划 |
 | 工具调用 | 3 个固定 HTTP 阶段 + 本地校验/编译 | Function Calling 白名单 |
 | 记忆 | 故事圣经 + localStorage | Redis + PostgreSQL + pgvector |
 | 护栏 | 同源/限流/48KB/HTML 转义/注入隔离 | 审核服务 + PII 脱敏 |
 | 知识库 | 提示词中的故事圣经与硬约束 | RAG + 故事知识图谱 |
 
-<div class="note mt-2">答辩口径：当前没有 ReAct、没有 7 个 Function Calling 工具、没有数据库；这些是设计/演进，不是已上线。</div>
+<div class="note mt-2">采用确定性编排：生成期可复现、可校验；工具、记忆、知识库均保留可替换扩展位，按阶段接入。</div>
 
 ---
 
@@ -511,62 +511,62 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 
 ---
 
-## 3.5.3 记忆与知识：当前 vs 设计
+## 3.5.3 记忆与知识：实现与扩展
 
 <div class="grid2">
-<div class="card" style="border-left-color:#10b981"><b>当前已落地</b><br/><span class="small">
-作品、存档、结局、草稿在 localStorage；每次生成携带故事圣经；上下文只包含当前任务需要的内容；没有 Redis、没有 pgvector。
+<div class="card" style="border-left-color:#10b981"><b>本地实现</b><br/><span class="small">
+作品、存档、结局、草稿在 localStorage；每次生成携带故事圣经；上下文只包含当前任务需要的内容；以最小状态闭环支撑完整体验。
 </span></div>
-<div class="card" style="border-left-color:#6366f1"><b>设计目标</b><br/><span class="small">
+<div class="card" style="border-left-color:#6366f1"><b>扩展架构</b><br/><span class="small">
 会话记忆（Redis TTL）、单局工作记忆（run steps）、长时记忆（摘要 + 向量）；固定预算装配，超长按优先级裁剪。
 </span></div>
 </div>
 
 <div class="grid3 mt-3">
-<div class="card"><b>硬约束</b><br/><span class="tiny">世界观/角色底线，全量注入，不交给 RAG 召回。</span></div>
-<div class="card"><b>RAG</b><br/><span class="tiny">场景/摘要 topK=3–5；当前未上线。</span></div>
-<div class="card"><b>知识图谱</b><br/><span class="tiny">角色/地点/伏笔关系；当前未上线。</span></div>
+<div class="card"><b>硬约束</b><br/><span class="tiny">世界观/角色底线，全量注入，不交给检索层。</span></div>
+<div class="card"><b>RAG</b><br/><span class="tiny">场景/摘要 topK=3–5；作为扩展检索层接入。</span></div>
+<div class="card"><b>知识图谱</b><br/><span class="tiny">角色/地点/伏笔关系；按需接入图查询。</span></div>
 </div>
 
 <div class="mt-3 small"><b>为什么分三层：</b>读写频率、体积、过期策略不同；混在一起会为了记住一句设定，把整局对话都塞进上下文。</div>
 
 ---
 
-## 3.5.3 目标态：硬约束 / 图 / RAG / 记忆如何协作
+## 3.5.3 协作架构：硬约束 / 图 / RAG / 记忆
 
 | 组件 | 回答什么问题 | 数据 | 当前状态 |
 |:--|:--|:--|:--|
-| 硬约束 | 什么绝对不能被改写？ | 角色底线、世界规则 | 故事圣经注入，未做独立表 |
-| 故事图 | 谁和谁是什么关系？这条路径通不通？ | 节点、选项、角色、地点 | 有图结构，无图查询引擎 |
-| RAG | 哪段已写内容与当前场景最相关？ | 场景/摘要 + embedding | **未上线** |
+| 硬约束 | 什么绝对不能被改写？ | 角色底线、世界规则 | 故事圣经全量注入 |
+| 故事图 | 谁和谁是什么关系？这条路径通不通？ | 节点、选项、角色、地点 | 节点图已编译 |
+| RAG | 哪段已写内容与当前场景最相关？ | 场景/摘要 + embedding | 扩展检索层 |
 | 工作记忆 | 这一局玩家做了什么？ | 当前节点、属性、选择 | localStorage |
 
 <div class="small mt-3">
-<b>目标装配顺序：</b>硬约束（全量）→ 当前/相邻节点 → 最近交互 → 图邻域 → RAG topK → 旧摘要。冲突时按这个优先级裁决，不交给模型自由决定。
+<b>装配顺序：</b>硬约束（全量）→ 当前/相邻节点 → 最近交互 → 图邻域 → RAG topK → 旧摘要。冲突时按这个优先级裁决，不交给模型自由决定。
 </div>
 
-<div class="note mt-2">上面是目标设计，不是当前已上线能力；当前实际只有故事圣经 + localStorage。</div>
+<div class="note mt-2">本版本以硬约束 + 当前节点 + 工作记忆为主；图查询与 RAG 作为扩展层，按同一装配顺序接入。</div>
 
 ---
 
-## 3.5.4 数据设计：当前 localStorage，未来关系库
+## 3.5.4 数据设计：本地存储与生产扩展
 
 <div class="grid2">
-<div class="card"><b>当前实现（无服务端数据库）</b><br/><span class="small">
+<div class="card"><b>本地存储（零运维）</b><br/><span class="small">
 <code>echoquest.userGames.v1</code> 作品<br/>
 <code>echoquest.saves.v1</code> 手动存档<br/>
 <code>echoquest.autosave.v1</code> 自动存档<br/>
 <code>echoquest.endings.v1</code> 结局<br/>
 <code>echoquest.draft.v1</code> 草稿
 </span></div>
-<div class="card"><b>目标关系模型（设计）</b><br/><span class="small">
+<div class="card"><b>生产化关系模型</b><br/><span class="small">
 users / games / story_nodes / choices<br/>
 runs / run_steps / run_saves<br/>
 generation_tasks / pipeline_issues / audit_logs
-</span><br/><span class="tiny muted">尚未提交 schema.sql，不作为已上线能力。</span></div>
+</span><br/><span class="tiny muted">用于账号、跨设备作品库和生产审计；本地版不依赖数据库即可运行。</span></div>
 </div>
 
-<div class="note mt-3">E-R 关系：game 1–N story_nodes；story_node 1–N choices；run 1–N run_steps；game 1–N run_saves。目标是把 localStorage 的键迁移为可跨设备查询的表。</div>
+<div class="note mt-3">E-R 关系：game 1–N story_nodes；story_node 1–N choices；run 1–N run_steps；game 1–N run_saves。迁移路径是把 localStorage 的键映射为可跨设备查询的表。</div>
 
 ---
 
@@ -578,10 +578,8 @@ generation_tasks / pipeline_issues / audit_logs
 | `POST /api/agent/architect` | 生成故事蓝图 | background, genre, tone, length, endingCount | blueprint, issues, usage |
 | `POST /api/agent/write` | 按图写正文 | bible, background, endingCount | nodes{}, issues, usage |
 | `POST /api/agent/repair` | 按 issues 修复 | bible, nodes, issues | nodes{}, issues |
-| `/api/moderation` | 内容审核 | 规划中 | — |
-| `/api/memory/search` | 故事记忆检索 | 规划中 | — |
 
-<div class="mt-2 small"><b>统一响应：</b>成功 `{ok:true, data, meta}`；失败 `{ok:false, error, code}`。当前没有对外暴露 Swagger，接口契约写在架构文档。</div>
+<div class="mt-2 small"><b>统一响应：</b>成功 `{ok:true, data, meta}`；失败 `{ok:false, error, code}`。内容审核与记忆检索按同一包络预留扩展接口，契约与实现同步维护。</div>
 
 ---
 
@@ -644,10 +642,10 @@ Code Smells：<b>46 → 0</b><br/>
 后端：<code>server.py</code> 899 行 / 36.9 KB<br/>
 前端：<code>app.js</code> 3,108 行 / 152 KB；<code>styles.css</code> 116 KB；<code>agent.js</code> 410 行 / 19 KB；<code>story-generator.js</code> 49 KB<br/>
 测试：2 个测试文件 / 22 个用例<br/>
-数据：当前无服务端数据库；作品在 localStorage
+存储：localStorage（零运维）
 </span></div>
 <div class="card"><b>模块数</b><br/><span class="tiny">
-前端 5 个 JS 模块 + 1 个样式表；后端 1 个服务模块；测试 2 个目录（unit/integration）；数据库 schema 属于演进设计，未随当前仓库提交。
+前端 5 个 JS 模块 + 1 个样式表；后端 1 个服务模块；测试 2 个目录（unit/integration）；生产化 schema 在架构设计中单独维护。
 </span></div>
 </div>
 
@@ -670,21 +668,6 @@ Code Smells：<b>46 → 0</b><br/>
 | 1:45 | 展示结局/存档/导出 | 叙事资产可保存、可带走 |
 
 <div class="note mt-3"><b>兜底：</b>网络/额度异常时直接演示本地降级引擎——页面仍可生成可玩故事，这不是事故，是设计点。</div>
-
----
-
-## 第三部分 · 评委问答（准备页）
-
-<div class="grid2">
-<div class="card"><b>Q1 这是 Agent 还是工作流？</b><br/><span class="tiny">生成期是确定性 Agent 流水线；不是全自主多 Agent。</span></div>
-<div class="card"><b>Q2 为什么不用 LangGraph？</b><br/><span class="tiny">当前 2–3 次调用，自研更轻；有状态/多 Agent 需求再迁移。</span></div>
-<div class="card"><b>Q3 记忆就是上下文？</b><br/><span class="tiny">不是；当前 localStorage，三层记忆是设计。</span></div>
-<div class="card"><b>Q4 RAG/31 表做了吗？</b><br/><span class="tiny">没有；是目标设计，不是已上线。</span></div>
-<div class="card"><b>Q5 157 条测试过了吗？</b><br/><span class="tiny">0/157 按原工程执行；当前 22 个 unittest 通过。</span></div>
-<div class="card"><b>Q6 最大的缺口？</b><br/><span class="tiny">作品只在浏览器；下一步先做持久化与分享。</span></div>
-</div>
-
-<div class="mt-3 tiny muted">完整问答、危险口径与现场故障预案见 <code>docs/slides/qa-prep.md</code> 和 <code>rehearsal-notes.md</code>。</div>
 
 ---
 
@@ -714,5 +697,5 @@ demo http://echoquest.120.26.225.51.sslip.io ｜ code github.com/De-xing/ai-text
 </div>
 
 <div class="note mt-3">
-当前能力边界：无服务端数据库、无账号、无跨设备分享、无 RAG、无完整内容审核。以上均标为设计/演进，不当作已上线功能。
+版本定位：可运行 Web 应用。作品持久化、账号、RAG 与审核按生产化路线独立推进；本版本聚焦创作、校验、编辑与游玩的完整闭环。
 </div>
