@@ -308,14 +308,16 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 
 ## 3.3 代码仓库与协作
 
-<div class="grid2">
-<div class="card"><b>仓库</b><br/><code>github.com/De-xing/ai-text-adventure-game</code><br/><span class="tiny muted">JavaScript + Python · Web 应用</span></div>
-<div class="card"><b>提交规范</b><br/>Conventional Commits：<code>feat:</code> / <code>fix:</code> / <code>docs:</code> / <code>refactor:</code><br/><span class="tiny muted">每条提交对应一个可验收改动</span></div>
+<div class="grid2" style="align-items:stretch">
+<figure class="shot" style="display:flex;flex-direction:column;justify-content:center">
+  <img src="./images/pulse.png" alt="GitHub 提交记录" style="height:360px;width:100%;object-fit:contain;background:#fff" />
+  <figcaption>GitHub Contributors：De-xing 38 commits / Wirtz696 3 commits</figcaption>
+</figure>
+<div>
+  <div class="card"><b>仓库</b><br/><code>github.com/De-xing/ai-text-adventure-game</code><br/><span class="tiny muted">JavaScript + Python · Web 应用</span></div>
+  <div class="card mt-2"><b>提交规范</b><br/>Conventional Commits：<code>feat:</code> / <code>fix:</code> / <code>docs:</code> / <code>refactor:</code><br/><span class="tiny muted">每条提交对应一个可验收改动</span></div>
+  <div class="card mt-2"><b>CI / Issues</b><br/>GitHub Actions 跑 22 个 unittest<br/><span class="tiny muted">Issues 作为公开缺陷池；质量报告见 3.6</span></div>
 </div>
-
-<div class="grid2 mt-3">
-<div class="card"><b>提交历史</b><br/><a href="https://github.com/De-xing/ai-text-adventure-game/pulse">github.com/De-xing/ai-text-adventure-game/pulse</a><br/><span class="tiny muted">按功能拆分提交，每个提交对应一个可验收改动</span></div>
-<div class="card"><b>CI / Issues</b><br/>GitHub Actions 跑 22 个 unittest<br/><span class="tiny muted">Issues 作为公开缺陷池；质量报告见 3.6</span></div>
 </div>
 
 <div class="mt-3 tiny">
