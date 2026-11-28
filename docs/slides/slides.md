@@ -46,7 +46,7 @@ AI 互动叙事生成 Agent · v1.3
 <div class="card"><b>第一部分 · 产品介绍（8 分钟）</b><br/>1 产品设计 → 2 设计原则 → 3 产品实现<br/><span class="muted">其中 3.5.3 智能体设计为重点，约 4 分钟</span></div>
 <div class="card"><b>第二部分 · 作品演示（2 分钟）</b><br/>创作 → 生成 → 编辑 → 游玩</div>
 <div class="card"><b>第三部分 · 评委问答（5 分钟）</b><br/>已准备核心问题与边界回答</div>
-<div class="card"><b>附录（不讲）</b><br/>参考文献、能力边界、演进路线</div>
+<div class="card"><b>附录（不讲）</b><br/>参考文献、能力边界</div>
 </div>
 
 ---
@@ -279,7 +279,7 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 | 模型 | `deepseek-chat` | 2026-11 配置 | OpenAI-compatible |
 | 网关 | Nginx | 1.18+ | 静态站点 + `/api` 反代 |
 | 进程管理 | systemd | — | 自启、崩溃重启 |
-| 数据 | 浏览器 localStorage | — | 本地零运维；生产版可切换关系库 |
+| 数据 | 浏览器 localStorage | — | 本地零运维 |
 | 质量 | Pylint / Radon / unittest | 4.1.3 / 6.0.1 / stdlib | 22 个用例 |
 | CI | GitHub Actions | — | 回归测试 |
 | 幻灯片 | Slidev | latest | Markdown 即源码 |
@@ -295,11 +295,11 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 ① 选型验证的是叙事结构，不是框架能力；<br/>
 ② 单机 3 并发、每天 300 次调用的量级，标准库足够；<br/>
 ③ 零依赖 = 老师/评委在自己电脑上 `python server.py` 就能跑。</div>
-<div class="card" style="border-left-color:#f59e0b"><b>什么时候必须“重”</b><br/>
-① 并发 &gt; 50 或多实例：换 FastAPI + Gunicorn；<br/>
-② 账号/作品库/审核：PostgreSQL + Redis；<br/>
-③ 语义检索：pgvector。<br/>
-<span class="tiny muted">三条写进架构文档 §7.4 的分阶段路线。</span></div>
+<div class="card"><b>当前结论</b><br/>
+前端：原生 JS + Hash 路由<br/>
+后端：Python stdlib<br/>
+模型：OpenAI-compatible<br/>
+数据：localStorage + SQLite</div>
 </div>
 
 <div class="mt-4 small"><b>选型标准：</b>这项技术是否解决当前阶段的唯一瓶颈？当前瓶颈是“模型输出不可控”，所以重心放在校验与编排，不是框架。</div>
@@ -396,15 +396,13 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 <div class="dbox llm"><b>systemd</b><span class="s">echoquest.service<br/>127.0.0.1:8000</span></div>
 </div>
 
-| 项 | 当前现状 | 扩展方向 |
-|:--|:--|:--|
-| 计算 | 单台 ECS，3 并发 | 弹性与多实例 |
-| 存储 | 浏览器 localStorage | 作品持久化与备份 |
-| 密钥 | `/opt/echoquest/.secrets/api.json`，600 | 轮换流程与 KMS |
-| 网络 | 80 端口，安全组最小开放 | HTTPS + WAF |
-| 可观测 | 日志 + 前端 Agent Trace | requestId 贯通 + 成本看板 |
-
-<div class="mt-2 tiny muted">基础设施按单机演示规模设计；生产化按表中的扩展方向推进。</div>
+| 项 | 当前现状 |
+|:--|:--|
+| 计算 | 单台 ECS，3 并发 |
+| 存储 | 浏览器 localStorage + 单机 SQLite |
+| 密钥 | `/opt/echoquest/.secrets/api.json`，600 |
+| 网络 | 80 端口，安全组最小开放 |
+| 可观测 | 日志 + 前端 Agent Trace |
 
 ---
 
@@ -412,15 +410,15 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 
 <div class="small mb-2">核心判断：<b>模型只负责“写”，程序负责“准不准、能不能玩、贵不贵”。</b></div>
 
-| 部件 | Demo 版实现 | 生产化演进 |
-|:--|:--|:--|
-| 任务编排 | 固定流水线 + `/api/agent/plan` 计划图 | Plan-and-Solve 动态重规划 |
-| 工具调用 | `tools/whitelist.json` + `/api/tools/route` 规则路由 | 模型自主 Function Calling |
-| 记忆 | SQLite `games/runs/summaries` + `/api/memory/*` | Redis + PostgreSQL + pgvector |
-| 护栏 | 本地 PII/关键词 `/api/safety/check` | 审核服务 + PII 脱敏 |
-| 知识库 | BM25 + 128 维哈希向量 + 同主题图扩展 | pgvector + GraphRAG |
+| 部件 | 当前实现（Demo） |
+|:--|:--|
+| 任务编排 | 固定流水线 + `/api/agent/plan` 计划图 |
+| 工具调用 | `tools/whitelist.json` + `/api/tools/route` 规则路由 |
+| 记忆 | SQLite `games/runs/summaries` + `/api/memory/*` |
+| 护栏 | 本地 PII/关键词 `/api/safety/check` |
+| 知识库 | BM25 + 128 维哈希向量 + 同主题图扩展 |
 
-<div class="note mt-2">五件套 Demo 已落地：计划接口、工具白名单/路由、SQLite 记忆、本地护栏、混合 RAG。生产化列仍未替换 Redis/PostgreSQL/pgvector/审核服务。</div>
+<div class="note mt-2">五件套 Demo 已落地：计划接口、工具白名单/路由、SQLite 记忆、本地护栏、混合 RAG。</div>
 
 <div class="tiny muted mt-2">代码：<code>agent_runtime.py</code> / <code>memory_store.py</code> / <code>guardrails.py</code> / <code>tools/whitelist.json</code> / <code>knowledge/</code></div>
 
@@ -531,24 +529,24 @@ JSON 非法 → 去围栏/尾逗号 → 条件修复<br/>
 
 ---
 
-## 3.5.3 记忆与知识：实现与扩展
+## 3.5.3 记忆与知识：当前实现
 
 <div class="grid2">
 <div class="card" style="border-left-color:#10b981"><b>本地实现</b><br/><span class="small">
 作品、存档、结局、草稿在 localStorage；每次生成携带故事圣经；上下文只包含当前任务需要的内容；以最小状态闭环支撑完整体验。
 </span></div>
-<div class="card" style="border-left-color:#6366f1"><b>扩展架构</b><br/><span class="small">
-会话记忆（Redis TTL）、单局工作记忆（run steps）、长时记忆（摘要 + 向量）；固定预算装配，超长按优先级裁剪。
+<div class="card" style="border-left-color:#6366f1"><b>SQLite 记忆</b><br/><span class="small">
+games / runs / summaries；/api/memory/save 与 /api/memory/load；单机持久化，前端仍以 localStorage 为主。
 </span></div>
 </div>
 
 <div class="grid3 mt-3">
 <div class="card"><b>硬约束</b><br/><span class="tiny">世界观/角色底线，全量注入，不交给检索层。</span></div>
 <div class="card"><b>RAG</b><br/><span class="tiny">9 篇知识文档，BM25 + 哈希向量 + 图扩展 topK=3，已注入架构与撰写 Prompt。</span></div>
-<div class="card"><b>知识图谱</b><br/><span class="tiny">角色/地点/伏笔关系；按需接入图查询。</span></div>
+<div class="card"><b>图扩展</b><br/><span class="tiny">按知识文档主题做邻域加分；已接入混合检索。</span></div>
 </div>
 
-<div class="mt-3 small"><b>为什么分三层：</b>读写频率、体积、过期策略不同；混在一起会为了记住一句设定，把整局对话都塞进上下文。</div>
+<div class="mt-3 small"><b>边界：</b>当前是 localStorage + 单机 SQLite；跨设备、多用户记忆不在本版本。</div>
 
 
 ---
@@ -589,7 +587,7 @@ JSON 非法 → 去围栏/尾逗号 → 条件修复<br/>
 输入 <code>query</code>、<code>topK</code>；返回片段、来源和分数，便于调试与演示。
 </span></div>
 <div class="card"><b>边界</b><br/><span class="tiny">
-当前是本地混合检索 Demo（BM25 + 哈希向量 + 同主题图），不是语义 embedding/pgvector；生产版再替换。硬约束仍然全量注入，不依赖召回。
+当前是本地混合检索（BM25 + 哈希向量 + 同主题图），不依赖外部向量库；硬约束仍然全量注入，不依赖召回。
 </span></div>
 </div>
 
@@ -610,11 +608,11 @@ JSON 非法 → 去围栏/尾逗号 → 条件修复<br/>
 <b>装配顺序：</b>硬约束（全量）→ 当前/相邻节点 → 最近交互 → 图邻域 → RAG topK → 旧摘要。冲突时按这个优先级裁决，不交给模型自由决定。
 </div>
 
-<div class="note mt-2">本版本已接入混合 RAG Demo + 工作记忆；生产级 pgvector/GraphRAG 作为扩展层。</div>
+<div class="note mt-2">本版本已接入混合 RAG Demo + 工作记忆。</div>
 
 ---
 
-## 3.5.4 数据设计：本地存储与生产扩展
+## 3.5.4 数据设计：本地存储与 SQLite
 
 <div class="grid2">
 <div class="card"><b>本地存储（零运维）</b><br/><span class="small">
@@ -624,14 +622,14 @@ JSON 非法 → 去围栏/尾逗号 → 条件修复<br/>
 <code>echoquest.endings.v1</code> 结局<br/>
 <code>echoquest.draft.v1</code> 草稿
 </span></div>
-<div class="card"><b>生产化关系模型</b><br/><span class="small">
-users / games / story_nodes / choices<br/>
-runs / run_steps / run_saves<br/>
-generation_tasks / pipeline_issues / audit_logs
-</span><br/><span class="tiny muted">用于账号、跨设备作品库和生产审计；本地版不依赖数据库即可运行。</span></div>
+<div class="card"><b>SQLite 记忆（Demo）</b><br/><span class="small">
+games / runs / summaries<br/>
+/api/memory/save 与 /api/memory/load<br/>
+单机持久化；与浏览器 localStorage 并存
+</span></div>
 </div>
 
-<div class="note mt-3">E-R 关系：game 1–N story_nodes；story_node 1–N choices；run 1–N run_steps；game 1–N run_saves。迁移路径是把 localStorage 的键映射为可跨设备查询的表。</div>
+<div class="note mt-3">当前使用 localStorage 保存玩家进度，SQLite 保存服务端作品/步骤/摘要；两者都不依赖外部数据库服务。</div>
 
 ---
 
@@ -710,7 +708,7 @@ Code Smells：<b>46 → 0</b><br/>
 存储：localStorage（零运维）
 </span></div>
 <div class="card"><b>模块数</b><br/><span class="tiny">
-前端 5 个 JS 模块 + 1 个样式表；后端 1 个服务模块；测试 2 个目录（unit/integration）；生产化 schema 在架构设计中单独维护。
+前端 5 个 JS 模块 + 1 个样式表；后端 1 个服务模块；测试 2 个目录（unit/integration）；数据库 schema 由 memory_store.py 管理。
 </span></div>
 </div>
 
@@ -762,5 +760,5 @@ demo http://echoquest.120.26.225.51.sslip.io ｜ code github.com/De-xing/ai-text
 </div>
 
 <div class="note mt-3">
-版本定位：可运行 Web 应用。作品持久化、账号、RAG 与审核按生产化路线独立推进；本版本聚焦创作、校验、编辑与游玩的完整闭环。
+版本定位：可运行 Web 应用。已接入本地 RAG、SQLite 记忆与本地护栏；聚焦创作、校验、编辑与游玩的完整闭环。
 </div>
