@@ -418,9 +418,9 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 | 工具调用 | 3 个固定 HTTP 阶段 + 本地校验/编译 | Function Calling 白名单 |
 | 记忆 | 故事圣经 + localStorage | Redis + PostgreSQL + pgvector |
 | 护栏 | 同源/限流/48KB/HTML 转义/注入隔离 | 审核服务 + PII 脱敏 |
-| 知识库 | 提示词中的故事圣经与硬约束 | RAG + 故事知识图谱 |
+| 知识库 | `knowledge/*.md` + BM25 topK=3 + 故事圣经 | 向量 RAG + 故事知识图谱 |
 
-<div class="note mt-2">采用确定性编排：生成期可复现、可校验；工具、记忆、知识库均保留可替换扩展位，按阶段接入。</div>
+<div class="note mt-2">采用确定性编排：生成期可复现、可校验；知识库已接入 BM25 检索，工具与记忆保留可替换扩展位。</div>
 
 ---
 
@@ -441,7 +441,7 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 
 ---
 
-## 3.5.3 生成流水线
+## 3.5.3 任务编排 · 生成流水线
 
 <div class="dflow" style="gap:4px">
 <div class="dbox llm"><b>① 架构</b><span class="s">/architect</span></div>
@@ -466,6 +466,48 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 | 编译 | **是** | 复用已有内容重跑 |
 
 <div class="mt-2 tiny muted">失败路径：超时、429/5xx、JSON 解析失败、断链/选项不足、输出截断；每条都有明确归宿，不静默返回半成品。</div>
+
+---
+
+## 3.5.3 任务编排 · 状态与失败路径
+
+<div class="dflow" style="gap:3px">
+<div class="dbox"><b>用户提交</b><span class="s">背景/参数</span></div>
+<div class="darrow">▶</div>
+<div class="dbox warn"><b>生成锁</b><span class="s">防重复提交</span></div>
+<div class="darrow">▶</div>
+<div class="dbox local"><b>健康探测</b><span class="s">/api/health</span></div>
+<div class="darrow">▶</div>
+<div class="dbox llm"><b>Agent 编排</b><span class="s">架构→校验→撰写</span></div>
+<div class="darrow">▶</div>
+<div class="dbox warn"><b>条件修复</b><span class="s">issues 非空</span></div>
+<div class="darrow">▶</div>
+<div class="dbox local"><b>编译</b><span class="s">game 对象</span></div>
+<div class="darrow">▶</div>
+<div class="dbox"><b>工坊</b><span class="s">可编辑/可玩</span></div>
+</div>
+
+<div class="grid2 mt-3">
+<div class="card"><b>状态控制</b><br/>
+<span class="tiny">
+① <code>state.generation</code> 锁：生成中禁止二次提交<br/>
+② <code>AbortController</code>：用户取消后不再写入作品<br/>
+③ 上游最多 3 个并发；每个阶段独立超时<br/>
+④ 只有编译成功才进入工坊，避免半成品落库
+</span></div>
+<div class="card"><b>失败矩阵</b><br/>
+<span class="tiny">
+超时 → 重试 1 次 → 本地降级<br/>
+429/5xx → 退避 2s 重试 1 次<br/>
+JSON 非法 → 去围栏/尾逗号 → 条件修复<br/>
+断链/选项不足 → issues → 最多 1 次 repair<br/>
+用户取消 → 终止请求 → 不产生 game
+</span></div>
+</div>
+
+<div class="note mt-3">编排的核心不是“让模型多跑几次”，而是让每次失败都有明确归宿：可降级的降级，不可降级的 4xx 拒绝，绝不静默返回半成品。</div>
+
+<div class="tiny muted mt-2">代码入口：<code>app.js: startGeneration()</code> → <code>agent.js: generate()</code> → <code>server.py: do_POST()</code></div>
 
 ---
 
@@ -498,11 +540,56 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 
 <div class="grid3 mt-3">
 <div class="card"><b>硬约束</b><br/><span class="tiny">世界观/角色底线，全量注入，不交给检索层。</span></div>
-<div class="card"><b>RAG</b><br/><span class="tiny">场景/摘要 topK=3–5；作为扩展检索层接入。</span></div>
+<div class="card"><b>RAG</b><br/><span class="tiny">9 篇知识文档，BM25 topK=3，已注入架构与撰写 Prompt。</span></div>
 <div class="card"><b>知识图谱</b><br/><span class="tiny">角色/地点/伏笔关系；按需接入图查询。</span></div>
 </div>
 
 <div class="mt-3 small"><b>为什么分三层：</b>读写频率、体积、过期策略不同；混在一起会为了记住一句设定，把整局对话都塞进上下文。</div>
+
+
+---
+
+## 3.5.3 轻量 RAG：知识如何进入 Prompt
+
+<div class="dflow" style="gap:4px">
+<div class="dbox local"><b>知识文档</b><span class="s">knowledge/*.md</span></div>
+<div class="darrow">▶</div>
+<div class="dbox"><b>分块</b><span class="s">按段落/标题</span></div>
+<div class="darrow">▶</div>
+<div class="dbox llm"><b>BM25 索引</b><span class="s">中文 2-gram</span></div>
+<div class="darrow">▶</div>
+<div class="dbox warn"><b>TopK=3</b><span class="s">来源 + 分数</span></div>
+<div class="darrow">▶</div>
+<div class="dbox llm"><b>Prompt 注入</b><span class="s">架构 / 撰写</span></div>
+<div class="darrow">▶</div>
+<div class="dbox local"><b>生成</b><span class="s">故事图 + 正文</span></div>
+</div>
+
+<div class="grid3 mt-3">
+<div class="card"><b>知识语料</b><br/><span class="tiny">
+9 篇 Markdown：结构、文风、角色、内容安全；悬疑/恋爱/科幻/冒险/末世五类题材。
+<br/>共 34 个可检索片段。
+</span></div>
+<div class="card"><b>检索实现</b><br/><span class="tiny">
+<code>server.py: search_knowledge()</code><br/>
+中文按 2-gram、英文按词切分；BM25 打分，topK=3，零新增依赖。
+</span></div>
+<div class="card"><b>注入与可观测</b><br/><span class="tiny">
+架构/撰写 Prompt 增加 <code>参考资料</code>；响应 <code>meta.knowledge</code> 返回来源、标题、分数。
+</span></div>
+</div>
+
+<div class="grid2 mt-3">
+<div class="card"><b>接口</b><br/><span class="tiny">
+<code>POST /api/knowledge/search</code><br/>
+输入 <code>query</code>、<code>topK</code>；返回片段、来源和分数，便于调试与演示。
+</span></div>
+<div class="card"><b>边界</b><br/><span class="tiny">
+当前是词法 RAG（BM25），不是向量 RAG；pgvector/embedding 留作下一阶段。硬约束仍然全量注入，不依赖召回。
+</span></div>
+</div>
+
+<div class="note mt-3">RAG 解决“查得到”，不解决“结构一定对”；结构仍然由校验器与条件修复保证。</div>
 
 ---
 
@@ -512,14 +599,14 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 |:--|:--|:--|:--|
 | 硬约束 | 什么绝对不能被改写？ | 角色底线、世界规则 | 故事圣经全量注入 |
 | 故事图 | 谁和谁是什么关系？这条路径通不通？ | 节点、选项、角色、地点 | 节点图已编译 |
-| RAG | 哪段已写内容与当前场景最相关？ | 场景/摘要 + embedding | 扩展检索层 |
+| RAG | 哪段知识/场景与当前任务最相关？ | Markdown 分块 + BM25 词法 | 已接入 topK=3 |
 | 工作记忆 | 这一局玩家做了什么？ | 当前节点、属性、选择 | localStorage |
 
 <div class="small mt-3">
 <b>装配顺序：</b>硬约束（全量）→ 当前/相邻节点 → 最近交互 → 图邻域 → RAG topK → 旧摘要。冲突时按这个优先级裁决，不交给模型自由决定。
 </div>
 
-<div class="note mt-2">本版本以硬约束 + 当前节点 + 工作记忆为主；图查询与 RAG 作为扩展层，按同一装配顺序接入。</div>
+<div class="note mt-2">本版本已接入 BM25 RAG + 工作记忆；图查询与向量检索作为扩展层。</div>
 
 ---
 
@@ -624,7 +711,7 @@ Code Smells：<b>46 → 0</b><br/>
 </div>
 
 <div class="grid2 mt-3">
-<div class="card"><b>文档与交付物</b><br/><span class="tiny">架构文档 39 KB；测试用例 50 KB；质量报告 8 KB；部署指南 20 KB</span></div>
+<div class="card"><b>文档与交付物</b><br/><span class="tiny">架构文档 39 KB；测试用例 50 KB；质量报告 8 KB；部署指南 20 KB；知识库 9 篇 / 34 片段</span></div>
 <div class="card"><b>AI 辅助 vs 手写</b><br/><span class="tiny">骨架与重复性代码由 AI 辅助；校验器、状态机、Schema、提示词策略由团队设计与修改。<br/><span class="muted">按文件归属粗估约 60% AI 辅助 / 40% 人工设计与修改；非行级精确统计。</span></span></div>
 </div>
 
