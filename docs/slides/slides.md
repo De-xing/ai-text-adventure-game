@@ -28,7 +28,7 @@ drawings:
 AI 互动叙事生成 Agent · v1.3
 </div>
 <div class="mt-1 text-xs muted">
-在线演示 http://echoquest.120.26.225.51.sslip.io ｜ 仓库 github.com/De-xing/ai-text-adventure-game
+在线演示 http://120.26.225.51 ｜ 仓库 github.com/De-xing/ai-text-adventure-game
 </div>
 
 </div>
