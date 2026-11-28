@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "description": "EchoQuest 固定阶段工具白名单。模型不能自主选择工具，只有这里登记的路由可以被 POST 调用。",
+  "tools": [
+    {
+      "name": "create_story_blueprint",
+      "endpoint": "/api/agent/architect",
+      "method": "POST",
+      "handler": "_handle_architect",
+      "mode": "llm",
+      "scopes": ["story:write"]
+    },
+    {
+      "name": "write_story_content",
+      "endpoint": "/api/agent/write",
+      "method": "POST",
+      "handler": "_handle_write",
+      "mode": "llm",
+      "scopes": ["story:write"]
+    },
+    {
+      "name": "repair_story_content",
+      "endpoint": "/api/agent/repair",
+      "method": "POST",
+      "handler": "_handle_repair",
+      "mode": "llm",
+      "scopes": ["story:write"]
+    },
+    {
+      "name": "search_story_knowledge",
+      "endpoint": "/api/knowledge/search",
+      "method": "POST",
+      "handler": "_handle_knowledge_search",
+      "mode": "read",
+      "scopes": ["knowledge:read"]
+    }
+  ]
+}
