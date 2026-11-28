@@ -412,15 +412,17 @@ EchoQuest <b>是一个把自然语言设定编译成可玩互动叙事的生成�
 
 <div class="small mb-2">核心判断：<b>模型只负责“写”，程序负责“准不准、能不能玩、贵不贵”。</b></div>
 
-| 部件 | 当前实际 | 演进/设计 |
+| 部件 | Demo 版实现 | 生产化演进 |
 |:--|:--|:--|
-| 任务编排 | 生成期固定流水线，游玩期规则推进 | Plan-and-Solve、图规划 |
-| 工具调用 | 3 个固定 HTTP 阶段 + 本地校验/编译 | Function Calling 白名单 |
-| 记忆 | 故事圣经 + localStorage | Redis + PostgreSQL + pgvector |
-| 护栏 | 同源/限流/48KB/HTML 转义/注入隔离 | 审核服务 + PII 脱敏 |
-| 知识库 | `knowledge/*.md` + BM25 topK=3 + 故事圣经 | 向量 RAG + 故事知识图谱 |
+| 任务编排 | 固定流水线 + `/api/agent/plan` 计划图 | Plan-and-Solve 动态重规划 |
+| 工具调用 | `tools/whitelist.json` + `/api/tools/route` 规则路由 | 模型自主 Function Calling |
+| 记忆 | SQLite `games/runs/summaries` + `/api/memory/*` | Redis + PostgreSQL + pgvector |
+| 护栏 | 本地 PII/关键词 `/api/safety/check` | 审核服务 + PII 脱敏 |
+| 知识库 | BM25 + 128 维哈希向量 + 同主题图扩展 | pgvector + GraphRAG |
 
-<div class="note mt-2">采用确定性编排：生成期可复现、可校验；知识库已接入 BM25 检索，工具与记忆保留可替换扩展位。</div>
+<div class="note mt-2">五件套 Demo 已落地：计划接口、工具白名单/路由、SQLite 记忆、本地护栏、混合 RAG。生产化列仍未替换 Redis/PostgreSQL/pgvector/审核服务。</div>
+
+<div class="tiny muted mt-2">代码：<code>agent_runtime.py</code> / <code>memory_store.py</code> / <code>guardrails.py</code> / <code>tools/whitelist.json</code> / <code>knowledge/</code></div>
 
 ---
 
@@ -525,6 +527,8 @@ JSON 非法 → 去围栏/尾逗号 → 条件修复<br/>
 <div class="card"><b>数据</b><br/><span class="tiny">Key 服务端 600<br/>同源校验<br/>48KB + 限流</span></div>
 </div>
 
+<div class="tiny muted mt-2">工具白名单：<code>tools/whitelist.json</code>；启动时校验，未知路由 404；<code>GET /api/tools</code> 可查看。</div>
+
 ---
 
 ## 3.5.3 记忆与知识：实现与扩展
@@ -540,7 +544,7 @@ JSON 非法 → 去围栏/尾逗号 → 条件修复<br/>
 
 <div class="grid3 mt-3">
 <div class="card"><b>硬约束</b><br/><span class="tiny">世界观/角色底线，全量注入，不交给检索层。</span></div>
-<div class="card"><b>RAG</b><br/><span class="tiny">9 篇知识文档，BM25 topK=3，已注入架构与撰写 Prompt。</span></div>
+<div class="card"><b>RAG</b><br/><span class="tiny">9 篇知识文档，BM25 + 哈希向量 + 图扩展 topK=3，已注入架构与撰写 Prompt。</span></div>
 <div class="card"><b>知识图谱</b><br/><span class="tiny">角色/地点/伏笔关系；按需接入图查询。</span></div>
 </div>
 
@@ -556,7 +560,7 @@ JSON 非法 → 去围栏/尾逗号 → 条件修复<br/>
 <div class="darrow">▶</div>
 <div class="dbox"><b>分块</b><span class="s">按段落/标题</span></div>
 <div class="darrow">▶</div>
-<div class="dbox llm"><b>BM25 索引</b><span class="s">中文 2-gram</span></div>
+<div class="dbox llm"><b>混合索引</b><span class="s">BM25 + 128维向量</span></div>
 <div class="darrow">▶</div>
 <div class="dbox warn"><b>TopK=3</b><span class="s">来源 + 分数</span></div>
 <div class="darrow">▶</div>
@@ -572,7 +576,7 @@ JSON 非法 → 去围栏/尾逗号 → 条件修复<br/>
 </span></div>
 <div class="card"><b>检索实现</b><br/><span class="tiny">
 <code>server.py: search_knowledge()</code><br/>
-中文按 2-gram、英文按词切分；BM25 打分，topK=3，零新增依赖。
+中文按 2-gram、英文按词切分；BM25 + 128 维哈希向量 + 同主题图扩展，topK=3，零新增依赖。
 </span></div>
 <div class="card"><b>注入与可观测</b><br/><span class="tiny">
 架构/撰写 Prompt 增加 <code>参考资料</code>；响应 <code>meta.knowledge</code> 返回来源、标题、分数。
@@ -585,7 +589,7 @@ JSON 非法 → 去围栏/尾逗号 → 条件修复<br/>
 输入 <code>query</code>、<code>topK</code>；返回片段、来源和分数，便于调试与演示。
 </span></div>
 <div class="card"><b>边界</b><br/><span class="tiny">
-当前是词法 RAG（BM25），不是向量 RAG；pgvector/embedding 留作下一阶段。硬约束仍然全量注入，不依赖召回。
+当前是本地混合检索 Demo（BM25 + 哈希向量 + 同主题图），不是语义 embedding/pgvector；生产版再替换。硬约束仍然全量注入，不依赖召回。
 </span></div>
 </div>
 
@@ -599,14 +603,14 @@ JSON 非法 → 去围栏/尾逗号 → 条件修复<br/>
 |:--|:--|:--|:--|
 | 硬约束 | 什么绝对不能被改写？ | 角色底线、世界规则 | 故事圣经全量注入 |
 | 故事图 | 谁和谁是什么关系？这条路径通不通？ | 节点、选项、角色、地点 | 节点图已编译 |
-| RAG | 哪段知识/场景与当前任务最相关？ | Markdown 分块 + BM25 词法 | 已接入 topK=3 |
+| RAG | 哪段知识/场景与当前任务最相关？ | Markdown 分块 + BM25 + 哈希向量 + 图扩展 | 已接入 Demo topK=3 |
 | 工作记忆 | 这一局玩家做了什么？ | 当前节点、属性、选择 | localStorage |
 
 <div class="small mt-3">
 <b>装配顺序：</b>硬约束（全量）→ 当前/相邻节点 → 最近交互 → 图邻域 → RAG topK → 旧摘要。冲突时按这个优先级裁决，不交给模型自由决定。
 </div>
 
-<div class="note mt-2">本版本已接入 BM25 RAG + 工作记忆；图查询与向量检索作为扩展层。</div>
+<div class="note mt-2">本版本已接入混合 RAG Demo + 工作记忆；生产级 pgvector/GraphRAG 作为扩展层。</div>
 
 ---
 
