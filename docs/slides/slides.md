@@ -36,8 +36,8 @@ th, td { padding: 0.28em 0.5em !important; }
 .dbox.warn { border-color: #f59e0b; background: #fffbeb; }
 .darrow { color: #94a3b8; font-size: 0.72em; }
 .shot { margin: 0; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; background: #fff; }
-.shot img { display: block; width: 100%; height: 170px; object-fit: contain; background: #fff; }
-.shot figcaption { font-size: 0.5em; color: #64748b; padding: 3px 6px; border-top: 1px solid #eef2f6; }
+.shot img { display: block; width: 100%; max-width: 100%; height: 138px; object-fit: contain; background: #fff; }
+.shot figcaption { font-size: 0.46em; line-height: 1.3; color: #64748b; padding: 3px 6px; border-top: 1px solid #eef2f6; }
 .cover { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 21rem; }
 .cover h1 { font-size: 3em; margin: 0.15em 0 0.1em; font-weight: 700; }
 </style>
@@ -621,11 +621,11 @@ Code Smells：<b>46 → 0</b><br/>
 
 <div class="grid2 mt-3">
 <figure class="shot">
-  <img src="./images/quality-report.png" alt="质量报告" style="object-fit:cover;object-position:top" />
+  <img src="./images/quality-report.png" alt="质量报告" style="height:138px;width:100%;object-fit:cover;object-position:top;display:block" />
   <figcaption>质量报告：Pylint 分数、Code Smell、复杂度</figcaption>
 </figure>
 <figure class="shot">
-  <img src="./images/scan-compare.png" alt="重构前后扫描对比" />
+  <img src="./images/scan-compare.png" alt="重构前后扫描对比" style="height:138px;width:100%;object-fit:contain;display:block" />
   <figcaption>左：重构前 8.98 / 46 smells；右：重构后 10.00 / 0</figcaption>
 </figure>
 </div>
